@@ -3,557 +3,1008 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multinational Company - Complete Career Hierarchy Dashboard</title>
+    <title>H7DJ 04/AS/08 - Enterprise Operations BPM Matrix (50 Processes)</title>
+    <!-- Google Fonts for Modern Styling -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --bg-main: #0b0f19;
-            --bg-card: #131c2e;
-            --bg-strip: #1e293b;
-            --border-color: #24334d;
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --accent-color: #38bdf8;
+            --primary: #0284c7;
+            --primary-gradient: linear-gradient(135deg, #0284c7, #0369a1);
+            --bg-primary: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-color: #e2e8f0;
+            --node-border: #0f172a;
+            --node-bg: #ffffff;
+            --connector-color: #475569;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
 
-            /* Hierarchy Functional Colors */
-            --color-board: #0f172a;
-            --color-ceo: #1e3a8a;
-            --color-csuite: #0369a1;
-            --color-global: #047857;
-            --color-dept-head: #581c87;
-            --color-senior: #1d4ed8;
-            --color-middle: #b45309;
-            --color-specialist: #0f766e;
-            --color-junior: #c2410c;
-            --color-programs: #be123c;
-            --color-support: #475569;
+        [data-theme="dark"] {
+            --primary: #38bdf8;
+            --primary-gradient: linear-gradient(135deg, #38bdf8, #0284c7);
+            --bg-primary: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --node-border: #38bdf8;
+            --node-bg: #1e293b;
+            --connector-color: #94a3b8;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
         }
 
         body {
-            background-color: var(--bg-main);
-            color: var(--text-primary);
-            padding: 2rem;
-            line-height: 1.4;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 0;
+            line-height: 1.5;
         }
 
-        header {
+        /* Header block styling matching Java Institute requirements */
+        .academic-header {
+            background-color: var(--bg-card);
+            border-bottom: 2px solid var(--border-color);
+            padding: 24px 40px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid var(--text-main);
+        }
+
+        .header-table td {
+            border: 1px solid var(--text-main);
+            padding: 12px 16px;
+            font-size: 14px;
+            background-color: var(--bg-card);
+            color: var(--text-main);
+        }
+
+        .institute-title {
             text-align: center;
-            margin-bottom: 3rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 2rem;
-        }
-
-        header h1 {
-            font-size: 2.4rem;
+            font-weight: 800;
+            font-size: 18px;
+            background-color: var(--border-color) !important;
+            letter-spacing: 1px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--accent-color);
-            margin-bottom: 0.5rem;
+            font-family: 'Outfit', sans-serif;
         }
 
-        header p {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
+        /* Controls and Theme Switcher */
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            gap: 15px;
+            flex-wrap: wrap;
         }
 
-        /* Executive Section Layout */
-        .exec-section {
+        .mode-toggle-group {
+            display: flex;
+            background: var(--border-color);
+            padding: 4px;
+            border-radius: 8px;
+            gap: 2px;
+        }
+
+        .btn-mode {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-mode.active {
+            background: var(--bg-card);
+            color: var(--text-main);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .theme-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-main);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .theme-btn:hover {
+            border-color: var(--accent-color);
+        }
+
+        /* Main Workspace Grid */
+        .workspace {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px 40px 40px;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 30px;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            height: fit-content;
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 20px;
+        }
+
+        .sidebar-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--primary);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .sector-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sector-item {
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            border: 1px solid transparent;
+        }
+
+        .sector-item:hover {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+        }
+
+        .sector-item.active {
+            background-color: var(--primary);
+            color: #ffffff;
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Content Area */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Search and Filter Panel */
+        .search-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-primary);
+            color: var(--text-main);
+            font-size: 14px;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .search-stats {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        /* Diagram Wrapper Styling */
+        .diagram-wrapper {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .diagram-wrapper:hover {
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .meta-row {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+            color: var(--text-main);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .meta-row strong {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .meta-row.bg-light-gray {
+            background-color: var(--bg-primary);
+            font-weight: 600;
+            font-size: 15px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        /* Flow Diagram Elements */
+        .flow-container {
+            padding: 40px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1.5rem;
-            margin-bottom: 4rem;
+            background-color: var(--bg-card);
+            overflow-x: auto;
         }
 
-        .exec-row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-            width: 100%;
-            max-width: 1400px;
-        }
-
-        .tier-badge {
-            width: 100%;
-            text-align: center;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 1.5px;
-            padding: 0.4rem;
-            color: #fff;
-            border-radius: 4px;
-            margin-top: 1rem;
-        }
-
-        .exec-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 1rem;
-            min-width: 200px;
-            text-align: center;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
-            transition: all 0.25s ease-in-out;
-        }
-
-        .exec-card:hover {
-            transform: translateY(-2px);
-            border-color: var(--accent-color);
-            box-shadow: 0 8px 16px -4px rgba(56, 189, 248, 0.2);
-        }
-
-        .exec-card h3 {
-            font-size: 1rem;
-            color: #fff;
-            margin-bottom: 0.2rem;
-        }
-
-        .exec-card p {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-
-        /* 7 Pillars Grid Layout */
-        .grid-title {
-            text-align: center;
-            text-transform: uppercase;
-            font-size: 1.6rem;
-            letter-spacing: 1px;
-            margin-bottom: 2rem;
-            color: var(--text-primary);
-            border-left: 4px solid var(--accent-color);
-            padding-left: 10px;
-            display: inline-block;
-        }
-
-        .pillars-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 4rem;
-        }
-
-        .pillar-col {
-            background: rgba(19, 28, 46, 0.6);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 1.25rem;
+        .diagram-flow {
             display: flex;
             flex-direction: column;
-            gap: 1.25rem;
+            align-items: center;
+            width: 100%;
+            max-width: 900px;
         }
 
-        .pillar-header {
-            background: var(--bg-strip);
-            padding: 0.75rem;
-            border-radius: 6px;
-            text-align: center;
-            border-bottom: 2px solid var(--accent-color);
+        .start-node {
+            width: 28px;
+            height: 28px;
+            background-color: #10b981;
+            border: 3px solid var(--node-border);
+            border-radius: 50%;
+            margin-bottom: 12px;
+            position: relative;
+            box-shadow: var(--shadow-sm);
         }
 
-        .pillar-header h2 {
-            font-size: 1.15rem;
-            text-transform: uppercase;
-            color: #fff;
-            letter-spacing: 0.5px;
+        .end-node {
+            width: 28px;
+            height: 28px;
+            background-color: #ef4444;
+            border: 5px double var(--node-border);
+            border-radius: 50%;
+            margin-top: 12px;
+            box-shadow: var(--shadow-sm);
         }
 
-        .track-group {
-            background: rgba(11, 15, 25, 0.5);
-            border-radius: 6px;
-            padding: 0.75rem;
-            border-left: 3px solid var(--border-color);
+        .arrow-down {
+            width: 2px;
+            height: 24px;
+            background-color: var(--connector-color);
+            position: relative;
         }
 
-        .track-label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-            display: block;
-            letter-spacing: 0.5px;
+        .arrow-down::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: -4px;
+            border-width: 5px 5px 0 5px;
+            border-style: solid;
+            border-color: var(--connector-color) transparent transparent transparent;
         }
 
-        /* Track Label Dynamic Colors */
-        .lbl-head { color: #c084fc; border-left-color: var(--color-dept-head); }
-        .lbl-senior { color: #60a5fa; border-left-color: var(--color-senior); }
-        .lbl-middle { color: #fb923c; border-left-color: var(--color-middle); }
-        .lbl-spec { color: #2dd4bf; border-left-color: var(--color-specialist); }
-        .lbl-junior { color: #f97316; border-left-color: var(--color-junior); }
-
-        .role-ul {
-            list-style: none;
-        }
-
-        .role-ul li {
-            font-size: 0.82rem;
-            padding: 0.25rem 0.4rem;
-            color: #cbd5e1;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
-        }
-
-        .role-ul li:last-child {
-            border-bottom: none;
-        }
-
-        .role-ul li:hover {
-            background: rgba(56, 189, 248, 0.08);
-            color: var(--accent-color);
-            padding-left: 8px;
-            transition: all 0.2rem ease;
-        }
-
-        /* Bottom Sections */
-        .bottom-section {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
+        .activity-box {
+            border: 2px solid var(--node-border);
             border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .bottom-title {
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
+            padding: 14px 20px;
+            min-width: 320px;
+            max-width: 450px;
             text-align: center;
-            letter-spacing: 1px;
+            font-size: 13px;
+            font-weight: 500;
+            background-color: var(--node-bg);
+            box-shadow: var(--shadow-sm);
+            line-height: 1.5;
+            color: var(--text-main);
+            cursor: pointer;
         }
 
-        .flex-wrap-center {
+        .activity-box:hover {
+            transform: scale(1.02);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+
+        .fork-join-bar {
+            width: 80%;
+            height: 8px;
+            background-color: var(--node-border);
+            border-radius: 4px;
+            margin: 12px 0;
+        }
+
+        .parallel-split {
             display: flex;
-            flex-wrap: wrap;
+            justify-content: space-around;
+            width: 100%;
+            margin: 12px 0;
+            gap: 15px;
+        }
+
+        .parallel-branch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        .decision-diamond {
+            width: 120px;
+            height: 120px;
+            border: 2px solid var(--node-border);
+            transform: rotate(45deg);
+            margin: 25px 0;
+            display: flex;
+            align-items: center;
             justify-content: center;
-            gap: 1rem;
+            position: relative;
+            background-color: var(--node-bg);
+            box-shadow: var(--shadow-sm);
         }
 
-        .program-card {
-            background: rgba(189, 18, 60, 0.15);
-            border: 1px solid #be123c;
-            padding: 0.6rem 1.2rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .support-card {
-            background: rgba(71, 85, 109, 0.2);
-            border: 1px solid var(--color-support);
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-size: 0.82rem;
+        .decision-text {
+            transform: rotate(-45deg);
+            font-size: 11px;
             text-align: center;
-            min-width: 140px;
+            font-weight: 700;
+            padding: 8px;
+            line-height: 1.3;
+            color: var(--text-main);
+        }
+
+        .decision-paths-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 750px;
+            position: relative;
+            gap: 20px;
+        }
+
+        .path-line-left, .path-line-right {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        .path-label {
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--primary);
+            text-transform: uppercase;
+        }
+
+        .comment-footer {
+            border-top: 1px solid var(--border-color);
+            padding: 14px 20px;
+            font-size: 13px;
+            background-color: var(--bg-primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+        }
+
+        /* Tool Utilities */
+        .utility-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-utility {
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-utility:hover {
+            border-color: var(--primary);
+            background-color: var(--bg-primary);
+        }
+
+        /* Print view container overrides */
+        .print-view-container {
+            display: none;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Full View Styles */
+        body.full-document-mode .workspace {
+            display: block;
+            max-width: 1100px;
+        }
+
+        body.full-document-mode .sidebar,
+        body.full-document-mode .search-panel {
+            display: none;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Print styling rules */
+        @media print {
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                padding: 0 !important;
+            }
+
+            .academic-header {
+                box-shadow: none !important;
+                border-bottom: 2px solid #000000 !important;
+                padding: 0 0 20px 0 !important;
+            }
+
+            .header-table {
+                border: 2px solid #000000 !important;
+            }
+
+            .header-table td {
+                border: 1px solid #000000 !important;
+                color: #000000 !important;
+                background-color: #ffffff !important;
+            }
+
+            .institute-title {
+                background-color: #f1f5f9 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .action-bar, .sidebar, .search-panel, .utility-btns, .theme-btn {
+                display: none !important;
+            }
+
+            .workspace {
+                display: block !important;
+                padding: 0 !important;
+                max-width: 100% !important;
+            }
+
+            .diagram-wrapper {
+                page-break-inside: avoid !important;
+                border: 2px solid #000000 !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+                margin-bottom: 30px !important;
+            }
+
+            .meta-row {
+                border-bottom: 2px solid #000000 !important;
+                color: #000000 !important;
+                background: #ffffff !important;
+                padding: 10px 15px !important;
+            }
+
+            .meta-row.bg-light-gray {
+                background-color: #f1f5f9 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .flow-container {
+                padding: 20px 10px !important;
+                background: #ffffff !important;
+            }
+
+            .activity-box {
+                border: 2px solid #000000 !important;
+                background: #ffffff !important;
+                color: #000000 !important;
+                box-shadow: none !important;
+            }
+
+            .decision-diamond {
+                border: 2px solid #000000 !important;
+                background: #ffffff !important;
+                box-shadow: none !important;
+            }
+
+            .decision-text {
+                color: #000000 !important;
+            }
+
+            .fork-join-bar {
+                background-color: #000000 !important;
+            }
+
+            .arrow-down {
+                background-color: #000000 !important;
+            }
+
+            .arrow-down::after {
+                border-color: #000000 transparent transparent transparent !important;
+            }
+
+            .comment-footer {
+                border-top: 2px solid #000000 !important;
+                background: #ffffff !important;
+                color: #000000 !important;
+                padding: 10px 15px !important;
+            }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Multinational Company</h1>
-        <p>Complete Career Hierarchy & Enterprise Corporate Structure</p>
-    </header>
+<div class="academic-header">
+    <div class="header-container">
+        <table class="header-table">
+            <tr>
+                <td colspan="2" class="institute-title">JAVA INSTITUTE FOR ADVANCED TECHNOLOGY</td>
+            </tr>
+            <tr>
+                <td style="width: 50%;"><strong>Assignment No:</strong> H7DJ 04/AS/08</td>
+                <td><strong>Outcome Mapping:</strong> 3</td>
+            </tr>
+            <tr>
+                <td><strong>Title:</strong> Introduction to BPM (Individual Assignment)</td>
+                <td><strong>Individual / Group:</strong> Individual</td>
+            </tr>
+            <tr>
+                <td><strong>Marking Criteria:</strong> 50 Business Processes (30%) | 400 Activities (70%)</td>
+                <td><strong>Total Marks Valuation:</strong> 100% (Compulsory - Model B)</td>
+            </tr>
+        </table>
 
-    <main>
-        <section class="exec-section">
+        <div class="action-bar">
+            <div class="mode-toggle-group">
+                <button class="btn-mode active" id="btn-explore" onclick="setMode('explore')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    Interactive Explorer
+                </button>
+                <button class="btn-mode" id="btn-full" onclick="setMode('full')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    Full Printable View
+                </button>
+            </div>
             
-            <div class="tier-badge" style="background-color: var(--color-board);">Board Level Governance</div>
-            <div class="exec-row">
-                <div class="exec-card">
-                    <h3>Board of Directors</h3>
-                    <p>Shareholders • Chairman • Vice Chairman • Advisory Board</p>
-                </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="theme-btn" onclick="toggleTheme()">
+                    <svg id="theme-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <span id="theme-text">Dark Mode</span>
+                </button>
+                <button class="theme-btn" onclick="window.print()" style="background: var(--primary); color: white; border-color: transparent;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                    Print / PDF
+                </button>
             </div>
+        </div>
+    </div>
+</div>
 
-            <div class="tier-badge" style="background-color: var(--color-ceo);">Executive Leadership</div>
-            <div class="exec-row">
-                <div class="exec-card" style="border-color: #ef4444;">
-                    <h3>Chief Executive Officer (CEO)</h3>
-                    <p>Highest Ranking Executive Officer</p>
-                </div>
-            </div>
+<div class="workspace">
+    <!-- Sidebar Navigation for Departments -->
+    <div class="sidebar">
+        <div class="sidebar-title">Departments / Sectors</div>
+        <ul class="sector-list" id="sector-nav-list">
+            <!-- Dynamically Populated -->
+        </ul>
+    </div>
 
-            <div class="tier-badge" style="background-color: var(--color-csuite);">C-Suite Officers</div>
-            <div class="exec-row">
-                <div class="exec-card"><h3>COO</h3><p>Chief Operating Officer</p></div>
-                <div class="exec-card"><h3>CFO</h3><p>Chief Financial Officer</p></div>
-                <div class="exec-card"><h3>CTO</h3><p>Chief Technology Officer</p></div>
-                <div class="exec-card"><h3>CIO</h3><p>Chief Information Officer</p></div>
-                <div class="exec-card"><h3>CMO</h3><p>Chief Marketing Officer</p></div>
-                <div class="exec-card"><h3>CHRO</h3><p>Chief Human Resources Officer</p></div>
-                <div class="exec-card"><h3>CLO</h3><p>Chief Legal Officer</p></div>
-                <div class="exec-card"><h3>CSO</h3><p>Chief Security Officer</p></div>
-                <div class="exec-card"><h3>CDAO / CAIO</h3><p>Chief Data & AI Officer</p></div>
-                <div class="exec-card"><h3>CSO (Strategy)</h3><p>Chief Strategy Officer</p></div>
-            </div>
+    <!-- Main Content Area -->
+    <div class="content-area">
+        <div class="search-panel">
+            <input type="text" class="search-input" id="search-box" placeholder="Search processes or activities (e.g. 'Supplier', 'අමුද්‍රව්‍ය')..." oninput="handleSearch()">
+            <div class="search-stats" id="search-stats">Showing all 50 processes</div>
+        </div>
 
-            <div class="tier-badge" style="background-color: var(--color-global);">Global & Regional Executive Layer</div>
-            <div class="exec-row">
-                <div class="exec-card"><h3>President (Global)</h3><p>Global Corporate Scale</p></div>
-                <div class="exec-card"><h3>Regional President</h3><p>Asia Pacific</p></div>
-                <div class="exec-card"><h3>Regional President</h3><p>Europe</p></div>
-                <div class="exec-card"><h3>Regional President</h3><p>Americas</p></div>
-                <div class="exec-card"><h3>Regional President</h3><p>Middle East & Africa</p></div>
-                <div class="exec-card"><h3>Country Director</h3><p>Country Manager</p></div>
-                <div class="exec-card"><h3>Global Function Heads</h3><p>Matrix Leadership</p></div>
-                <div class="exec-card"><h3>Global Operations Head</h3><p>Infrastructure Execution</p></div>
-            </div>
-        </section>
+        <div id="diagrams-container">
+            <!-- Dynamically Rendered -->
+        </div>
+    </div>
+</div>
 
-        <center><h2 class="grid-title">Department / Business Unit Pillars</h2></center>
+<div class="toast" id="toast-notify">Copied to clipboard successfully!</div>
 
-        <section class="pillars-container">
+<script>
+    // Embedded Data of all 50 Processes and 400 Activities
+    const rawSectors = [{"id": 1, "nameEN": "Supplier Registration", "nameSI": "සැපයුම්කරුවන් ලියාපදිංචිය", "activities": [{"num": 1, "en": "Receive Application", "si": "අයදුම්පත ලබාගැනීම"}, {"num": 2, "en": "Verify Documents", "si": "ලියකියවිලි පරීක්ෂාව"}, {"num": 3, "en": "Evaluate Capability", "si": "හැකියාව තක්සේරු කිරීම"}, {"num": 4, "en": "Inspect Facility", "si": "පරිශ්රය පරීක්ෂා කිරීම"}, {"num": 5, "en": "Negotiate Terms", "si": "කොන්දේසි සාකච්ඡා කිරීම"}, {"num": 6, "en": "Approve Supplier", "si": "සැපයුම්කරු අනුමත කිරීම"}, {"num": 7, "en": "Save Details", "si": "තොරතුරු සුරැකීම"}, {"num": 8, "en": "Issue Certificate", "si": "සහතිකය නිකුත් කිරීම"}], "decision": {"q": "Is facility standard met?", "si": "පරිශ්‍රය ප්‍රමිතීන්ට ගැළපේද?"}, "sectorName": "Procurement & Supplier Management (සැපයුම්කරු සහ අමුද්රව්ය කළමනාකරණය)"}, {"id": 2, "nameEN": "Raw Material Requisition", "nameSI": "අමුද්රව්ය ඉල්ලුම් කිරීම", "activities": [{"num": 1, "en": "Check Stock", "si": "තොග පරීක්ෂා කිරීම"}, {"num": 2, "en": "Identify Shortage", "si": "අඩුපාඩු හඳුනාගැනීම"}, {"num": 3, "en": "Create Requisition", "si": "ඉල්ලුම්පත්රය සෑදීම"}, {"num": 4, "en": "Send to Manager", "si": "කළමනාකරුට යැවීම"}, {"num": 5, "en": "Review Request", "si": "ඉල්ලීම සමාලෝචනය"}, {"num": 6, "en": "Approve Requisition", "si": "ඉල්ලීම අනුමත කිරීම"}, {"num": 7, "en": "Forward to Purchasing", "si": "මිලදීගැනීම් අංශයට යැවීම"}, {"num": 8, "en": "Update Log", "si": "වාර්තාව යාවත්කාලීන කිරීම"}], "decision": {"q": "Is stock level critical?", "si": "තොග මට්ටම අවමද?"}, "sectorName": "Procurement & Supplier Management (සැපයුම්කරු සහ අමුද්රව්ය කළමනාකරණය)"}, {"id": 3, "nameEN": "Purchase Order Issuance", "nameSI": "මිලදී ගැනීමේ ඇණවුම් නිකුත් කිරීම", "activities": [{"num": 1, "en": "Select Supplier", "si": "සැපයුම්කරු තේරීම"}, {"num": 2, "en": "Request Quotations", "si": "මිලගණන් කැඳවීම"}, {"num": 3, "en": "Compare Prices", "si": "මිලගණන් සැසඳීම"}, {"num": 4, "en": "Draft PO", "si": "ඇණවුම් පත්රය කෙටුම්පත් කිරීම"}, {"num": 5, "en": "Authorize Budget", "si": "ප්රතිපාදන අනුමත කිරීම"}, {"num": 6, "en": "Send PO", "si": "ඇණවුම් පත්රය යැවීම"}, {"num": 7, "en": "Get Confirmation", "si": "තහවුරු කිරීම ලබාගැනීම"}, {"num": 8, "en": "File Order", "si": "ඇණවුම ගොනු කිරීම"}], "decision": {"q": "Is budget authorized?", "si": "ප්‍රතිපාදන අනුමතද?"}, "sectorName": "Procurement & Supplier Management (සැපයුම්කරු සහ අමුද්රව්ය කළමනාකරණය)"}, {"id": 4, "nameEN": "Inbound Material Inspection", "nameSI": "ඇතුළත් වන ද්රව්ය පරීක්ෂාව", "activities": [{"num": 1, "en": "Unload Truck", "si": "වාහනයෙන් බෑම"}, {"num": 2, "en": "Match Delivery Note", "si": "භාරදීමේ පත්රය සැසඳීම"}, {"num": 3, "en": "Count Quantity", "si": "ප්රමාණය ගණන් කිරීම"}, {"num": 4, "en": "Check Quality", "si": "තත්ත්වය පරීක්ෂා කිරීම"}, {"num": 5, "en": "Separate Damages", "si": "හානිවූ දේ වෙන්කිරීම"}, {"num": 6, "en": "Sign Goods Receipt", "si": "භාණ්ඩ ලැබුණු බවට අත්සන් කිරීම"}, {"num": 7, "en": "Reject Bad Items", "si": "බාල භාණ්ඩ ප්රතික්ෂේප කිරීම"}, {"num": 8, "en": "Inform Purchasing", "si": "මිලදීගැනීම් අංශයට දැනුම්දීම"}], "decision": {"q": "Does quality match spec?", "si": "තත්ත්වය ප්‍රමිතීන්ට ගැළපේද?"}, "sectorName": "Procurement & Supplier Management (සැපයුම්කරු සහ අමුද්රව්ය කළමනාකරණය)"}, {"id": 5, "nameEN": "Supplier Performance Evaluation", "nameSI": "සැපයුම්කරුගේ කාර්යසාධනය ඇගයීම", "activities": [{"num": 1, "en": "Collect Delivery Data", "si": "භාරදීම් දත්ත රැස්කිරීම"}, {"num": 2, "en": "Measure Delay Times", "si": "ප්රමාදයන් මැනීම"}, {"num": 3, "en": "Check Quality Rate", "si": "ගුණාත්මකභාවය පරීක්ෂා කිරීම"}, {"num": 4, "en": "Calculate Score", "si": "ලකුණු ගණනය කිරීම"}, {"num": 5, "en": "Generate Report", "si": "වාර්තාව සෑදීම"}, {"num": 6, "en": "Hold Review Meeting", "si": "සමාලෝචන රැස්වීමක් පැවැත්වීම"}, {"num": 7, "en": "Share Feedback", "si": "ප්රතිචාර ලබාදීම"}, {"num": 8, "en": "Update Status", "si": "තත්ත්වය යාවත්කාලීන කිරීම"}], "decision": {"q": "Is score above benchmark?", "si": "ලකුණු මට්ටම ප්‍රමාණවත්ද?"}, "sectorName": "Procurement & Supplier Management (සැපයුම්කරු සහ අමුද්රව්ය කළමනාකරණය)"}, {"id": 6, "nameEN": "Material Return to Supplier", "nameSI": "අමුද්රව්ය ආපසු යැවීම", "activities": [{"num": 1, "en": "Identify Defect", "si": "දෝෂය හඳුනාගැනීම"}, {"num": 2, "en": "Create Return Note", "si": "ආපසු යැවීමේ පත්රය සෑදීම"}, {"num": 3, "en": "Notify Supplier", "si": "සැපයුම්කරුට දැනුම්දීම"}, {"num": 4, "en": "Pack Defective Items", "si": "දෝෂ සහිත දේ ඇසුරුම් කිරීම"}, {"num": 5, "en": "Arrange Transport", "si": "ප්රවාහනය ලෑස්ති කිරීම"}, {"num": 6, "en": "Dispatch Goods", "si": "භාණ්ඩ පිටත් කිරීම"}, {"num": 7, "en": "Request Refund", "si": "Credit / මුදල්/ණය ඉල්ලීම"}, {"num": 8, "en": "Close Return Case", "si": "සිද්ධිය අවසන් කිරීම"}], "decision": {"q": "Is return approved?", "si": "ආපසු යැවීම අනුමතද?"}, "sectorName": "Procurement & Supplier Management (සැපයුම්කරු සහ අමුද්රව්ය කළමනාකරණය)"}, {"id": 7, "nameEN": "Material Put-Away", "nameSI": "අමුද්රව්ය ගබඩා කිරීම", "activities": [{"num": 1, "en": "Receive Approved Goods", "si": "අනුමත භාණ්ඩ ලබාගැනීම"}, {"num": 2, "en": "Locate Storage Slot", "si": "ගබඩා ස්ථානය සෙවීම"}, {"num": 3, "en": "Transport to Shelf", "si": "රාක්කය වෙත රැගෙන යාම"}, {"num": 4, "en": "Place Items", "si": "භාණ්ඩ තැන්පත් කිරීම"}, {"num": 5, "en": "Scan Location Barcode", "si": "ස්ථාන බාර්කෝඩ් එක ස්කෑන් කිරීම"}, {"num": 6, "en": "Update System Stock", "si": "පද්ධති තොග යාවත්කාලීන කිරීම"}, {"num": 7, "en": "Label Racks", "si": "රාක්ක ලේබල් කිරීම"}, {"num": 8, "en": "Lock Section", "si": "අංශය අගුලු දැමීම"}], "decision": {"q": "Is storage space available?", "si": "ගබඩා ඉඩ තිබේද?"}, "sectorName": "Inventory & Warehouse Management (ගබඩා කළමනාකරණය)"}, {"id": 8, "nameEN": "Stock Verification / Cycle Counting", "nameSI": "තොග පරීක්ෂාව", "activities": [{"num": 1, "en": "Select Category", "si": "ප්රවර්ගය තේරීම"}, {"num": 2, "en": "Print Count Sheet", "si": "ගණන් කිරීමේ පත්රය මුද්රණය"}, {"num": 3, "en": "Count Physical Items", "si": "භෞතිකව භාණ්ඩ ගණන් කිරීම"}, {"num": 4, "en": "Record Quantity", "si": "ප්රමාණය සටහන් කිරීම"}, {"num": 5, "en": "Compare with System", "si": "පද්ධතිය සමඟ සැසඳීම"}, {"num": 6, "en": "Find Discrepancies", "si": "වෙනස්කම් සෙවීම"}, {"num": 7, "en": "Adjust Stock Level", "si": "තොග මට්ටම් සකස් කිරීම"}, {"num": 8, "en": "Submit Report", "si": "වාර්තාව ඉදිරිපත් කිරීම"}], "decision": {"q": "Do physical counts match?", "si": "භෞතික ගණන් සැසඳේද?"}, "sectorName": "Inventory & Warehouse Management (ගබඩා කළමනාකරණය)"}, {"id": 9, "nameEN": "Stock Re-ordering", "nameSI": "තොග නැවත ඇණවුම් කිරීම", "activities": [{"num": 1, "en": "Monitor Stock Levels", "si": "තොග මට්ටම් නිරීක්ෂණය"}, {"num": 2, "en": "Trigger Reorder Point", "si": "නැවත ඇණවුම් මට්ටමට පැමිණීම"}, {"num": 3, "en": "Determine Quantity", "si": "අවශ්ය ප්රමාණය තීරණය කිරීම"}, {"num": 4, "en": "Check Budget Availability", "si": "අයවැය පරීක්ෂා කිරීම"}, {"num": 5, "en": "Generate Reorder Alert", "si": "ඇඟවීම් පණිවිඩයක් සෑදීම"}, {"num": 6, "en": "Verify Stock Manager", "si": "ගබඩා කළමනාකරු තහවුරු කිරීම"}, {"num": 7, "en": "Approve Request", "si": "ඉල්ලීම අනුමත කිරීම"}, {"num": 8, "en": "Send Purchasing Order", "si": "මිලදීගැනීමේ ඇණවුම යැවීම"}], "decision": {"q": "Is reorder point triggered?", "si": "නැවත ඇණවුම් මට්ටමට පැමිණ තිබේද?"}, "sectorName": "Inventory & Warehouse Management (ගබඩා කළමනාකරණය)"}, {"id": 10, "nameEN": "Warehouse Space Optimization", "nameSI": "ගබඩා ඉඩකඩ ප්රශස්තකරණය", "activities": [{"num": 1, "en": "Analyze Space Usage", "si": "ඉඩ භාවිතය විශ්ලේෂණය"}, {"num": 2, "en": "Identify Slow Items", "si": "අලෙවිය අඩු භාණ්ඩ සෙවීම"}, {"num": 3, "en": "Rearrange Shelves", "si": "රාක්ක නැවත සැකසීම"}, {"num": 4, "en": "Clear Dead Stock", "si": "නරක වූ/අනවශ්ය තොග ඉවත් කිරීම"}, {"num": 5, "en": "Clean Aisles", "si": "ගමන් මාර්ග පිරිසිදු කිරීම"}, {"num": 6, "en": "Update Layout Map", "si": "සැකසුම් සිතියම යාවත්කාලීන කිරීම"}, {"num": 7, "en": "Mark Hazard Zones", "si": "අන්තරาදායක කලාප සලකුණු කිරීම"}, {"num": 8, "en": "Approve New Space", "si": "නව ඉඩ අනුමත කිරීම"}], "decision": {"q": "Is space optimized?", "si": "ඉඩකඩ ප්‍රශස්තද?"}, "sectorName": "Inventory & Warehouse Management (ගබඩා කළමනාකරණය)"}, {"id": 11, "nameEN": "Scrap and Waste Disposal", "nameSI": "අපද්රව්ය බැහැර කිරීම", "activities": [{"num": 1, "en": "Collect Production Waste", "si": "නිෂ්පාදන අපද්රව්ය එකතු කිරීම"}, {"num": 2, "en": "Weigh Scrap Metal", "si": "Plastic / අපද්රව්ය බර මැනීම"}, {"num": 3, "en": "Move to Waste-Zone", "si": "අපද්රව්ය කලාපයට ගෙනයාම"}, {"num": 4, "en": "Categorize Hazards", "si": "අන්තරาයන් අනුව වෙන් කිරීම"}, {"num": 5, "en": "Contact Disposal Contractor", "si": "බැහැර කරන ආයතනය ඇමතීම"}, {"num": 6, "en": "Load Waste Truck", "si": "අපද්රව්ය රථයට පැටවීම"}, {"num": 7, "en": "Collect Payment", "si": "Receipt / ගෙවීම්/ලැබීම් ලබාගැනීම"}, {"num": 8, "en": "File Disposal Certificate", "si": "සහතිකය ගොනු කිරීම"}], "decision": {"q": "Is disposal certified?", "si": "බැහැර කිරීම සහතික කර තිබේද?"}, "sectorName": "Inventory & Warehouse Management (ගබඩා කළමනාකරණය)"}, {"id": 12, "nameEN": "Production Scheduling", "nameSI": "නිෂ්පාදන කාලසටහන් සෑදීම", "activities": [{"num": 1, "en": "Review Customer Orders", "si": "පාරිභෝගික ඇණවුම් සමාලෝචනය"}, {"num": 2, "en": "Check Machine Capacity", "si": "මැෂින්වල ධාරිතාව පරීක්ෂාව"}, {"num": 3, "en": "Forecast Demand", "si": "ඉල්ලුම පුරෝකථනය කිරීම"}, {"num": 4, "en": "Allocate Labor", "si": "සේවකයින් වෙන් කිරීම"}, {"num": 5, "en": "Draft Master Schedule", "si": "ප්රධාන කාලසටහන සැකසීම"}, {"num": 6, "en": "Assign Batch Numbers", "si": "ඛණ්ඩ අංක ලබාදීම"}, {"num": 7, "en": "Publish Schedule", "si": "කාලසටහන ප්රකාශයට පත් කිරීම"}, {"num": 8, "en": "Distribute to Supervisors", "si": "සුපරීක්ෂකවරුන්ට බෙදා හැරීම"}], "decision": {"q": "Is machine capacity free?", "si": "මැෂින් ධාරිතාව තිබේද?"}, "sectorName": "Production Planning & Manufacturing (නිෂ්පාදන සැලසුම්කරණය සහ නිෂ්පාදනය)"}, {"id": 13, "nameEN": "Material Issuing to Production", "nameSI": "නිෂ්පාදනයට අමුද්රව්ය නිකුත් කිරීම", "activities": [{"num": 1, "en": "Receive Material Request", "si": "අමුද්රව්ය ඉල්ලීම ලැබීම"}, {"num": 2, "en": "Verify Batch Requirements", "si": "අවශ්යතා තහවුරු කිරීම"}, {"num": 3, "en": "Pick Items from Shelf", "si": "රාක්කයෙන් භාණ්ඩ ගැනීම"}, {"num": 4, "en": "Weigh Raw Materials", "si": "අමුද්රව්ය බර මැනීම"}, {"num": 5, "en": "Scan Out Materials", "si": "ද්රව්ය පද්ධතියෙන් ඉවත් කිරීම"}, {"num": 6, "en": "Transport to Factory", "si": "කර්මාන්ත ශාලාවට ප්රවාහනය"}, {"num": 7, "en": "Handover to Supervisor", "si": "සුපරීක්ෂක වෙත භාරදීම"}, {"num": 8, "en": "Sign Issue Note", "si": "නිකුත් කිරීමේ පත්රය අත්සන් කිරීම"}], "decision": {"q": "Are batch materials ready?", "si": "අමුද්‍රව්‍ය සූදානම්ද?"}, "sectorName": "Production Planning & Manufacturing (නිෂ්පාදන සැලසුම්කරණය සහ නිෂ්පාදනය)"}, {"id": 14, "nameEN": "Machine Setup and Calibration", "nameSI": "මැෂින් සකස් කිරීම සහ ක්රමාංකනය", "activities": [{"num": 1, "en": "Clean Machine Area", "si": "මැෂින් ප්රදේශය පිරිසිදු කිරීම"}, {"num": 2, "en": "Install Tooling", "si": "Molds / අච්චු/මෙවලම් සවි කිරීම"}, {"num": 3, "en": "Set Power Parameters", "si": "බල පරාමිතීන් සැකසීම"}, {"num": 4, "en": "Lubricate Moving Parts", "si": "චලනය වන කොටස් ලිහිසි කිරීම"}, {"num": 5, "en": "Run Test Sample", "si": "පරීක්ෂණ නියැදියක් ධාවනය කිරීම"}, {"num": 6, "en": "Measure Sample Accuracy", "si": "නියැදියේ නිවැරදිභාවය මැනීම"}, {"num": 7, "en": "Adjust Settings Fine", "si": "සැකසුම් සියුම්ව සකස් කිරීම"}, {"num": 8, "en": "Log Machine Readiness", "si": "මැෂිම සූදානම් බව සටහන් කිරීම"}], "decision": {"q": "Is test sample accurate?", "si": "පරීක්ෂණ නියැදිය නිවැරදිද?"}, "sectorName": "Production Planning & Manufacturing (නිෂ්පාදන සැලසුම්කරණය සහ නිෂ්පාදනය)"}, {"id": 15, "nameEN": "Core Manufacturing Operation", "nameSI": "ප්රධාන නිෂ්පාදන ක්රියාවලිය", "activities": [{"num": 1, "en": "Feed Raw Materials", "si": "අමුද්රව්ය මැෂිමට දැමීම"}, {"num": 2, "en": "Start Assembly Line", "si": "එකලස් කිරීමේ මාර්ගය පටන්ගැනීම"}, {"num": 3, "en": "Monitor Machine Telemetry", "si": "මැෂින් තත්ත්වයන් නිරීක්ෂණය"}, {"num": 4, "en": "Perform Intermediate Assembly", "si": "අතරමැදි එකලස් කිරීම් කිරීම"}, {"num": 5, "en": "Refill Component Feeders", "si": "කොටස් නැවත පිරවීම"}, {"num": 6, "en": "Collect Semi-Finished Goods", "si": "අර්ධ නිමි භාණ්ඩ එකතු කිරීම"}, {"num": 7, "en": "Transport to Next-Stage", "si": "ඊළඟ අදියරට ප්රවාහනය"}, {"num": 8, "en": "Record Hourly Output", "si": "පැයක නිෂ්පාදනය සටහන් කිරීම"}], "decision": {"q": "Is machine telemetry normal?", "si": "මැෂින් තත්ත්වයන් සාමාන්‍යද?"}, "sectorName": "Production Planning & Manufacturing (නිෂ්පාදන සැලසුම්කරණය සහ නිෂ්පාදනය)"}, {"id": 16, "nameEN": "Product Packaging", "nameSI": "භාණ්ඩ ඇසුරුම් කිරීම", "activities": [{"num": 1, "en": "Transfer Finished Items", "si": "නිමි භාණ්ඩ මාරු කිරීම"}, {"num": 2, "en": "Inspect Package Integrity", "si": "ඇසුරුමේ ශක්තිමත් බව පරීක්ෂාව"}, {"num": 3, "en": "Apply Retail Labels", "si": "සිල්ලර ලේබල් ඇලවීම"}, {"num": 4, "en": "Place Items in Box", "si": "භාණ්ඩ පෙට්ටියට දැමීම"}, {"num": 5, "en": "Seal Shipping Box", "si": "පෙට්ටිය සීල් කිරීම"}, {"num": 6, "en": "Print Weight Label", "si": "බර ලේබලය මුද්රණය"}, {"num": 7, "en": "Stack on Pallets", "si": "පැලට් මත ගොඩගැසීම"}, {"num": 8, "en": "Move to Finished-Warehouse", "si": "නිමි භාණ්ඩ ගබඩාවට ගෙනයාම"}], "decision": {"q": "Is package integrity verified?", "si": "ඇසුරුම ශක්තිමත්ද?"}, "sectorName": "Production Planning & Manufacturing (නිෂ්පාදන සැලසුම්කරණය සහ නිෂ්පාදනය)"}, {"id": 17, "nameEN": "Machine Maintenance", "nameSI": "Preventive) (මැෂින් නඩත්තුව", "activities": [{"num": 1, "en": "Shutdown Machine Safely", "si": "මැෂිම ආරක්ෂිතව වසා දැමීම"}, {"num": 2, "en": "Lockout Tagout (LOTO)", "si": "විදුලිය විසන්ධි කර ලේබල් කිරීම"}, {"num": 3, "en": "Inspect Internal Gears", "si": "අභ්යන්තර ගියර් පරීක්ෂාව"}, {"num": 4, "en": "Replace Worn Belts", "si": "ගෙවුණු බෙල්ට් මාරු කිරීම"}, {"num": 5, "en": "Refill Engine Oil", "si": "එන්ජින් ඔයිල් පිරවීම"}, {"num": 6, "en": "Restart and Test", "si": "නැවත පණගන්වා පරීක්ෂා කිරීම"}, {"num": 7, "en": "Clean Workspace", "si": "වැඩබිම පිරිසිදු කිරීම"}, {"num": 8, "en": "Complete Maintenance Log", "si": "නඩත්තු වාර්තාව පිරවීම"}], "decision": {"q": "Are internal gears sound?", "si": "අභ්‍යන්තර ගියර් යහපත්ද?"}, "sectorName": "Production Planning & Manufacturing (නිෂ්පාදන සැලසුම්කරණය සහ නිෂ්පාදනය)"}, {"id": 18, "nameEN": "Factory Shift Handover", "nameSI": "වැඩ මුරය මාරු කිරීම", "activities": [{"num": 1, "en": "Stop Active Work", "si": "වැඩ නතර කිරීම"}, {"num": 2, "en": "Clean Individual Station", "si": "වැඩපොළ පිරිසිදු කිරීම"}, {"num": 3, "en": "Count Shift Output", "si": "නිෂ්පාදන ප්රමාණය ගණන් කිරීම"}, {"num": 4, "en": "Note Machine Issues", "si": "මැෂින් ගැටළු සටහන් කිරීම"}, {"num": 5, "en": "Welcome Next Shift", "si": "ඊළඟ සේවක පිරිස පිළිගැනීම"}, {"num": 6, "en": "Brief Incoming Team", "si": "පැමිණි කණ්ඩායම දැනුවත් කිරීම"}, {"num": 7, "en": "Handover Logbook Sign", "si": "වාර්තා පොත අත්සන් කර භාරදීම"}, {"num": 8, "en": "Exit Factory Floor", "si": "කර්මාන්ත ශාලාවෙන් පිටවීම"}], "decision": {"q": "Are shift logs signed off?", "si": "වාර්තා පොත අත්සන් කර තිබේද?"}, "sectorName": "Production Planning & Manufacturing (නිෂ්පාදන සැලසුම්කරණය සහ නිෂ්පාදනය)"}, {"id": 19, "nameEN": "Raw Material Quality Testing", "nameSI": "අමුද්රව්ය තත්ත්ව පරීක්ෂාව", "activities": [{"num": 1, "en": "Extract Material Sample", "si": "අමුද්රව්ය නියැදියක් ගැනීම"}, {"num": 2, "en": "Deliver to Lab", "si": "විද්යාගාරයට භාරදීම"}, {"num": 3, "en": "Run Chemical Analysis", "si": "රසායනික විශ්ලේෂණය සිදුකිරීම"}, {"num": 4, "en": "Test Tensile Strength", "si": "ශක්තිමත්භාවය පරීක්ෂා කිරීම"}, {"num": 5, "en": "Record Test Results", "si": "පරීක්ෂණ ප්රතිඵල සටහන් කිරීම"}, {"num": 6, "en": "Match Standard Specs", "si": "ප්රමිතීන් සමඟ සැසඳීම"}, {"num": 7, "en": "Issue Pass", "si": "Fail Tag / සමත්/අසමත් ටැගය නිකුත් කිරීම"}, {"num": 8, "en": "Release Accepted Batch", "si": "පිළිගත් තොගය මුදා හැරීම"}], "decision": {"q": "Does sample pass chemical test?", "si": "රසායනික විශ්ලේෂණය සමත්ද?"}, "sectorName": "Quality Assurance & Control (තත්ත්ව පාලනය)"}, {"id": 20, "nameEN": "In-Line Quality Inspection", "nameSI": "නිෂ්පාදන ක්රියාවලියේදී පරීක්ෂාව", "activities": [{"num": 1, "en": "Walk Assembly Line", "si": "නිෂ්පාදන මාර්ගයේ ගමන් කිරීම"}, {"num": 2, "en": "Pick Random Product", "si": "අහඹු ලෙස භාණ්ඩයක් තේරීම"}, {"num": 3, "en": "Measure Dimensions Exactly", "si": "දිග/පළල නිවැරදිව මැනීම"}, {"num": 4, "en": "Visual Defect Inspection", "si": "ඇසින් දෝෂ පරීක්ෂා කිරීම"}, {"num": 5, "en": "Note Deviations Early", "si": "වෙනස්කම් කල්තියා සටහන් කිරීම"}, {"num": 6, "en": "Stop Faulty Machine", "si": "දෝෂ සහිත මැෂිම නැවැත්වීම"}, {"num": 7, "en": "Reject Bad Pieces", "si": "වැරදි කොටස් ඉවත් කිරීම"}, {"num": 8, "en": "Log Inspection Data", "si": "පරීක්ෂණ දත්ත සටහන් කිරීම"}], "decision": {"q": "Are dimensions accurate?", "si": "මිනුම් නිවැරදිද?"}, "sectorName": "Quality Assurance & Control (තත්ත්ව පාලනය)"}, {"id": 21, "nameEN": "Finished Goods Final Audit", "nameSI": "නිමි භාණ්ඩ අවසන් විගණනය", "activities": [{"num": 1, "en": "Select Final Batch", "si": "අවසන් ඛණ්ඩය තේරීම"}, {"num": 2, "en": "Check Exterior Finish", "si": "බාහිර පෙනුම පරීක්ෂා කිරීම"}, {"num": 3, "en": "Test Product Functions", "si": "ක්රියාකාරීත්වය පරීක්ෂා කිරීම"}, {"num": 4, "en": "Verify Package Barcode", "si": "බාර්කෝඩ් එක තහවුරු කිරීම"}, {"num": 5, "en": "Review Batch Records", "si": "නිෂ්පාදන වාර්තා සමාලෝචනය"}, {"num": 6, "en": "Sign QA Certificate", "si": "තත්ත්ව සහතිකය අත්සන් කිරීම"}, {"num": 7, "en": "Apply \"Passed\" Sticker", "si": "\"සමත්\" ස්ටිකරය ඇලවීම"}, {"num": 8, "en": "Release to Logistics", "si": "ප්රවාහන අංශයට මුදා හැරීම"}], "decision": {"q": "Does batch pass audit?", "si": "නිමි භාණ්ඩ විගණනයෙන් සමත්ද?"}, "sectorName": "Quality Assurance & Control (තත්ත්ව පාලනය)"}, {"id": 22, "nameEN": "Non-Conformance Management", "nameSI": "ප්රමිතියෙන් තොර භාණ්ඩ කළමනාකරණය", "activities": [{"num": 1, "en": "Detect Defective Batch", "si": "දෝෂ සහිත තොගය හඳුනාගැනීම"}, {"num": 2, "en": "Quarantine Bad Items", "si": "භාණ්ඩ වෙන්කර තැබීම"}, {"num": 3, "en": "Raise NCR Form", "si": "NCR පෝරමය පිරවීම"}, {"num": 4, "en": "Analyze Root Cause", "si": "මූලික හේතුව විශ්ලේෂණය"}, {"num": 5, "en": "Decide Rework", "si": "Scrap / නැවත සැකසීම/අත්හැරීම තීරණය කිරීම"}, {"num": 6, "en": "Execute Approved Action", "si": "අනුමත පියවර ක්රියාත්මක කිරීම"}, {"num": 7, "en": "Re-inspect Reworked Items", "si": "නැවත සැකසූ දේ නැවත පරීක්ෂාව"}, {"num": 8, "en": "Close NCR Form", "si": "පෝරමය වසා දැමීම"}], "decision": {"q": "Is root cause identified?", "si": "මූලික හේතුව හඳුනාගෙන තිබේද?"}, "sectorName": "Quality Assurance & Control (තත්ත්ව පාලනය)"}, {"id": 23, "nameEN": "Lab Equipment Calibration", "nameSI": "විද්යාගාර උපකරණ ක්රමාංකනය", "activities": [{"num": 1, "en": "Identify Target Tool", "si": "අදාළ උපකරණය හඳුනාගැනීම"}, {"num": 2, "en": "Clean Sensor Elements", "si": "සංවේදක පිරිසිදු කිරීම"}, {"num": 3, "en": "Compare Master Weight", "si": "ප්රධාන බර සමඟ සැසඳීම"}, {"num": 4, "en": "Adjust Deviation Settings", "si": "වෙනස්කම් සකස් කිරීම"}, {"num": 5, "en": "Run Standard Test", "si": "සම්මත පරීක්ෂණයක් කිරීම"}, {"num": 6, "en": "Verify Reading Accuracy", "si": "නිරවද්යතාවය තහවුරු කිරීම"}, {"num": 7, "en": "Apply Calibration Label", "si": "ක්රමාංකන ලේබලය ඇලවීම"}, {"num": 8, "en": "Log Next Date", "si": "ඊළඟ දිනය සටහන් කිරීම"}], "decision": {"q": "Is reading accurate?", "si": "නිරවද්‍යතාවය තහවුරුද?"}, "sectorName": "Quality Assurance & Control (තත්ත්ව පාලනය)"}, {"id": 24, "nameEN": "Customer B2B Inquiry Handling", "nameSI": "පාරිභෝගික විමසීම් හැසිරවීම", "activities": [{"num": 1, "en": "Receive Client Inquiry", "si": "විමසීම ලබාගැනීම"}, {"num": 2, "en": "Review Product Availability", "si": "භාණ්ඩ තිබේදැයි බැලීම"}, {"num": 3, "en": "Check Custom Requirements", "si": "විශේෂ අවශ්යතා පරීක්ෂාව"}, {"num": 4, "en": "Prepare Price Quote", "si": "මිල ගණන් සකස් කිරීම"}, {"num": 5, "en": "Send Formal Quotation", "si": "මිල ගණන් පත්රය යැවීම"}, {"num": 6, "en": "Follow Up Customer", "si": "පාරිභෝගිකයා සම්බන්ධ කරගැනීම"}, {"num": 7, "en": "Negotiate Final Price", "si": "අවසන් මිල සාකච්ඡා කිරීම"}, {"num": 8, "en": "Log Inquiry Outcome", "si": "ප්රතිඵලය සටහන් කිරීම"}], "decision": {"q": "Is product available?", "si": "භාණ්ඩ තිබේද?"}, "sectorName": "Sales, Order Management & Marketing (විකිණුම් සහ ඇණවුම් කළමනාකරණය)"}, {"id": 25, "nameEN": "Sales Order Processing", "nameSI": "විකිණුම් ඇණවුම් සැකසීම", "activities": [{"num": 1, "en": "Receive Purchase Order", "si": "මිලදී ගැනීමේ ඇණවුම ලැබීම"}, {"num": 2, "en": "Verify Client Credit", "si": "පාරිභෝගිකයාගේ ණය සීමාව බැලීම"}, {"num": 3, "en": "Create Sales Order", "si": "විකිණුම් ඇණවුම සෑදීම"}, {"num": 4, "en": "Check Inventory Stock", "si": "ගබඩා තොග පරීක්ෂා කිරීම"}, {"num": 5, "en": "Reserve Finished Goods", "si": "නිමි භාණ්ඩ වෙන් කිරීම"}, {"num": 6, "en": "Confirm Order Delivery", "si": "භාරදීමේ දිනය තහවුරු කිරීම"}, {"num": 7, "en": "Send Order Confirmation", "si": "තහවුරු කිරීමේ පණිවිඩය යැවීම"}, {"num": 8, "en": "Route to Warehouse", "si": "ගබඩාවට යොමු කිරීම"}], "decision": {"q": "Is credit approved?", "si": "ණය සීමාව අනුමතද?"}, "sectorName": "Sales, Order Management & Marketing (විකිණුම් සහ ඇණවුම් කළමනාකරණය)"}, {"id": 26, "nameEN": "Customer Credit Approval", "nameSI": "පාරිභෝගික ණය අනුමැතිය", "activities": [{"num": 1, "en": "Receive Credit Application", "si": "ණය ඉල්ලුම්පත ලැබීම"}, {"num": 2, "en": "Request Bank References", "si": "බැංකු නිර්දේශ ඉල්ලීම"}, {"num": 3, "en": "Evaluate Financial Risk", "si": "මූල්ය අවදානම තක්සේරු කිරීම"}, {"num": 4, "en": "Score Credit History", "si": "ණය ඉතිහාසය පරික්ෂාව"}, {"num": 5, "en": "Determine Credit Limit", "si": "ණය සීමාව තීරණය කිරීම"}, {"num": 6, "en": "Get CFO Approval", "si": "මූල්ය ප්රධානියාගේ අනුමැතිය"}, {"num": 7, "en": "Setup Client Account", "si": "ගිණුම සකස් කිරීම"}, {"num": 8, "en": "Inform Sales Team", "si": "විකිණුම් කණ්ඩායමට දැනුම්දීම"}], "decision": {"q": "Is credit risk acceptable?", "si": "ණය අවදානම පිළිගත හැකිද?"}, "sectorName": "Sales, Order Management & Marketing (විකිණුම් සහ ඇණවුම් කළමනාකරණය)"}, {"id": 27, "nameEN": "Marketing Campaign Launch", "nameSI": "අලෙවිකරණ ව්යාපාරයක් ඇරඹීම", "activities": [{"num": 1, "en": "Define Target Audience", "si": "ඉලක්කගත පාරිභෝගිකයින් තේරීම"}, {"num": 2, "en": "Set Campaign Budget", "si": "අයවැය සැකසීම"}, {"num": 3, "en": "Design Promotional Artwork", "si": "ප්රවර්ධන නිර්මාණ සෑදීම"}, {"num": 4, "en": "Approve Media Content", "si": "අන්තර්ගතය අනුමත කිරීම"}, {"num": 5, "en": "Publish Digital Ads", "si": "ඩිජිටල් දැන්වීම් පළකිරීම"}, {"num": 6, "en": "Distribute Printed Flyers", "si": "මුද්රිත පත්රිකා බෙදා හැරීම"}, {"num": 7, "en": "Track Lead Generation", "si": "පාරිභෝගික උනන්දුව මැනීම"}, {"num": 8, "en": "Evaluate ROI Performance", "si": "ප්රතිඵල ඇගයීම"}], "decision": {"q": "Is media content approved?", "si": "අන්තර්ගතය අනුමතද?"}, "sectorName": "Sales, Order Management & Marketing (විකිණුම් සහ ඇණවුම් කළමනාකරණය)"}, {"id": 28, "nameEN": "E-commerce Order Fulfillment", "nameSI": "ඔන්ලයින් ඇණවුම් ඉටුකිරීම", "activities": [{"num": 1, "en": "Download Web Order", "si": "වර්ධිත වෙබ් ඇණවුම බාගැනීම"}, {"num": 2, "en": "Verify Payment Success", "si": "ගෙවීම් සාර්ථක බව බැලීම"}, {"num": 3, "en": "Print Picking List", "si": "භාණ්ඩ තේරීමේ ලැයිස්තුව මුද්රණය"}, {"num": 4, "en": "Retrieve Warehouse Items", "si": "භාණ්ඩ ගබඩාවෙන් ගැනීම"}, {"num": 5, "en": "Wrap Protective Layer", "si": "ආරක්ෂිත ඇසුරුම් දැමීම"}, {"num": 6, "en": "Paste Courier Label", "si": "කුරියර් ලේබලය ඇලවීම"}, {"num": 7, "en": "Handover Courier Agent", "si": "කුරියර් නියෝජිතයාට දීම"}, {"num": 8, "en": "Send Tracking Link", "si": "ඇණවුම නිරීක්ෂණ ලින්ක් එක යැවීම"}], "decision": {"q": "Is payment successful?", "si": "ගෙවීම් සාර්ථකද?"}, "sectorName": "Sales, Order Management & Marketing (විකිණුම් සහ ඇණවුම් කළමනාකරණය)"}, {"id": 29, "nameEN": "Customer Complaint Resolution", "nameSI": "පාරිභෝගික පැමිණිලි විසඳීම", "activities": [{"num": 1, "en": "Log Customer Complaint", "si": "පැමිණිල්ල සටහන් කිරීම"}, {"num": 2, "en": "Assign Support Agent", "si": "නියෝජිතයෙකු පත් කිරීම"}, {"num": 3, "en": "Investigate Issue Details", "si": "ගැටලුව විමර්ශනය කිරීම"}, {"num": 4, "en": "Propose Solution Plan", "si": "විසඳුමක් යෝජනා කිරීම"}, {"num": 5, "en": "Contact Client Solution", "si": "පාරිභෝගිකයාට විසඳුම කීම"}, {"num": 6, "en": "Issue Refund", "si": "Replacement / මුදල්/අලුත් භාණ්ඩයක් දීම"}, {"num": 7, "en": "Verify Client Satisfaction", "si": "සතුටුදායක බව තහවුරු කිරීම"}, {"num": 8, "en": "Close Ticket ID", "si": "පැමිණිල්ල වසා දැමීම"}], "decision": {"q": "Is complaint resolved?", "si": "පැමිණිල්ල විසඳී තිබේද?"}, "sectorName": "Sales, Order Management & Marketing (විකිණුම් සහ ඇණවුම් කළමනාකරණය)"}, {"id": 30, "nameEN": "Dispatch Planning", "nameSI": "බෙදාහැරීම් සැලසුම්කරණය", "activities": [{"num": 1, "en": "Aggregate Pending Shipments", "si": "ඇණවුම් එකතු කිරීම"}, {"num": 2, "en": "Group by Destination", "si": "ගමනාන්ත අනුව කාණ්ඩ කිරීම"}, {"num": 3, "en": "Calculate Total Weight", "si": "මුළු බර ගණනය කිරීම"}, {"num": 4, "en": "Select Suitable Vehicle", "si": "සුදුසු වාහනය තේරීම"}, {"num": 5, "en": "Optimize Route Path", "si": "කෙටිම මාර්ගය සෙවීම"}, {"num": 6, "en": "Assign Delivery Driver", "si": "රියදුරෙකු පත් කිරීම"}, {"num": 7, "en": "Prepare Gate Pass", "si": "ගේට්ටු බලපත්රය සෑදීම"}, {"num": 8, "en": "Print Loading Manifest", "si": "පැටවීමේ ලැයිස්තුව මුද්රණය"}], "decision": {"q": "Is route path optimized?", "si": "කෙටිම මාර්ගය හඳුනාගෙන තිබේද?"}, "sectorName": "Logistics & Distribution (ප්රවාහනය සහ බෙදාහැරීම)"}, {"id": 31, "nameEN": "Truck Loading Operation", "nameSI": "ට්රක් රථයට භාණ්ඩ පැටවීම", "activities": [{"num": 1, "en": "Inspect Vehicle Cleanliness", "si": "වාහනයේ පිරිසිදුකම බැලීම"}, {"num": 2, "en": "Position Truck Dock", "si": "වාහනය අදාළ ස්ථානයේ නැවතීම"}, {"num": 3, "en": "Stage Packed Pallets", "si": "පැලට් සූදානම් කර තැබීම"}, {"num": 4, "en": "Load Heavy First", "si": "බර දේවල් මුලින්ම පැටවීම"}, {"num": 5, "en": "Secure Load Straps", "si": "පටිවලින් තද කිරීම"}, {"num": 6, "en": "Cross-Check Manifest Items", "si": "ලැයිස්තුව සමඟ සැසඳීම"}, {"num": 7, "en": "Close Container Doors", "si": "දොරවල් වැසීම"}, {"num": 8, "en": "Apply Security Seal", "si": "ආරක්ෂිත සීල් තැබීම"}], "decision": {"q": "Is weight cross-checked?", "si": "මුළු බර සැසඳේද?"}, "sectorName": "Logistics & Distribution (ප්රවාහනය සහ බෙදාහැරීම)"}, {"id": 32, "nameEN": "Customer Delivery Execution", "nameSI": "භාණ්ඩ පාරිභෝගිකයාට භාරදීම", "activities": [{"num": 1, "en": "Arrive Customer Premises", "si": "පාරිභෝගික ස්ථානයට පැමිණීම"}, {"num": 2, "en": "Present Delivery Invoice", "si": "භාරදීමේ ඉන්වොයිසිය පෙන්වීම"}, {"num": 3, "en": "Unload Ordered Products", "si": "ඇණවුම් කල භාණ්ඩ බෑම"}, {"num": 4, "en": "Inspect Jointly Items", "si": "දෙපාර්ශවයම භාණ්ඩ පරීක්ෂා කිරීම"}, {"num": 5, "en": "Note Missing Quantities", "si": "අඩුපාඩු සටහන් කිරීම"}, {"num": 6, "en": "Obtain Customer Signature", "si": "පාරිභෝගික අත්සන ගැනීම"}, {"num": 7, "en": "Collect Cash Delivery", "si": "COD මුදල් එකතු කිරීම"}, {"num": 8, "en": "Return Signed Documents", "si": "අත්සන් කල පත්රිකා ආපසු ගෙන ඒම"}], "decision": {"q": "Do items match invoice?", "si": "භාණ්ඩ ඉන්වොයිසිය හා සැසඳේද?"}, "sectorName": "Logistics & Distribution (ප්රවාහනය සහ බෙදාහැරීම)"}, {"id": 33, "nameEN": "Third-Party Logistics", "nameSI": "3PL) Integration (බාහිර ප්රවාහන සේවා සම්බන්ධීකරණය", "activities": [{"num": 1, "en": "Identify Excess Orders", "si": "අතිරික්ත ඇණවුම් හඳුනාගැනීම"}, {"num": 2, "en": "Request 3PL Quotes", "si": "බාහිර සමාගම්වලින් මිල කැඳවීම"}, {"num": 3, "en": "Select Cost-Effective Partner", "si": "ලාභදායී සහකරු තේරීම"}, {"num": 4, "en": "Transfer Shipping Data", "si": "නැව්ගත කිරීමේ දත්ත යැවීම"}, {"num": 5, "en": "Prepare Outer Pallets", "si": "පැලට් සූදානම් කිරීම"}, {"num": 6, "en": "Handover 3PL Driver", "si": "බාහිර රියදුරුට භාරදීම"}, {"num": 7, "en": "Track Courier Progress", "si": "ගමන නිරීක්ෂණය කිරීම"}, {"num": 8, "en": "Verify Successful Delivery", "si": "භාරදීම තහවුරු කිරීම"}], "decision": {"q": "Is 3PL partner assigned?", "si": "බාහිර ප්‍රවාහනකරු සූදානම්ද?"}, "sectorName": "Logistics & Distribution (ප්රවාහනය සහ බෙදාහැරීම)"}, {"id": 34, "nameEN": "Fleet Vehicle Maintenance", "nameSI": "වාහන නඩත්තුව", "activities": [{"num": 1, "en": "Check Mileage Records", "si": "ධාවන දුර සටහන් බැලීම"}, {"num": 2, "en": "Book Service Center", "si": "සේවා මධ්යස්ථානය වෙන් කිරීම"}, {"num": 3, "en": "Inspect Tyre Treads", "si": "ටයර්වල ගෙවීම් පරීක්ෂාව"}, {"num": 4, "en": "Change Engine Oil", "si": "එන්ජින් ඔයිල් මාරු කිරීම"}, {"num": 5, "en": "Test Brake System", "si": "තිරිංග පද්ධතිය පරීක්ෂාව"}, {"num": 6, "en": "Renew Vehicle Insurance", "si": "වාහන රක්ෂණය අලුත් කිරීම"}, {"num": 7, "en": "Clean Vehicle Interior", "si": "අභ්යන්තරය පිරිසිදු කිරීම"}, {"num": 8, "en": "Update Maintenance Log", "si": "නඩත්තු වාර්තාව යාවත්කාලීන කිරීම"}], "decision": {"q": "Is brake system tested?", "si": "තිරිංග පද්ධතිය පරීක්ෂා කර තිබේද?"}, "sectorName": "Logistics & Distribution (ප්රවාහනය සහ බෙදාහැරීම)"}, {"id": 35, "nameEN": "Customer Invoicing", "nameSI": "පාරිභෝගිකයාට ඉන්වොයිසි නිකුත් කිරීම", "activities": [{"num": 1, "en": "Retrieve Delivery Note", "si": "භාරදීමේ පත්රය ගැනීම"}, {"num": 2, "en": "Extract Agreed Prices", "si": "එකඟ වූ මිල ගණන් ගැනීම"}, {"num": 3, "en": "Calculate Total Tax", "si": "බදු ගණනය කිරීම"}, {"num": 4, "en": "Generate Invoice PDF", "si": "ඉන්වොයිසිය සෑදීම"}, {"num": 5, "en": "Verify Billing Accuracy", "si": "නිවැරදිභාවය තහවුරු කිරීම"}, {"num": 6, "en": "Email Client Invoice", "si": "පාරිභෝගිකයාට ඊමේල් කිරීම"}, {"num": 7, "en": "Post Ledger Entry", "si": "ලේඛනවල සටහන් කිරීම"}, {"num": 8, "en": "Track Payment Terms", "si": "ගෙවිය යුතු දින නිරීක්ෂණය"}], "decision": {"q": "Is billing accuracy verified?", "si": "නිවැරදිභාවය තහවුරුද?"}, "sectorName": "Finance & Accounting (මූල්ය සහ ගණකාධිකරණය)"}, {"id": 36, "nameEN": "Accounts Receivable Collection", "nameSI": "ලැබිය යුතු මුදල් එකතු කිරීම", "activities": [{"num": 1, "en": "Identify Overdue Invoices", "si": "කල්ඉකුත් වූ ඉන්වොයිසි සෙවීම"}, {"num": 2, "en": "Send Friendly Reminder", "si": "මතක් කිරීමේ පණිවිඩයක් යැවීම"}, {"num": 3, "en": "Make Reminder Call", "si": "දුරකථන ඇමතුමක් දීම"}, {"num": 4, "en": "Receive Client Remittance", "si": "මුදල් එවූ බවට පත්රය ලැබීම"}, {"num": 5, "en": "Check Bank Statement", "si": "බැංකු ප්රකාශය පරීක්ෂාව"}, {"num": 6, "en": "Match Paid Amount", "si": "ගෙවූ මුදල සැසඳීම"}, {"num": 7, "en": "Issue Payment Receipt", "si": "ලැබීම් රිසිට්පතක් දීම"}, {"num": 8, "en": "Update Customer Balance", "si": "පාරිභෝගික ශේෂය යාවත්කාලීන කිරීම"}], "decision": {"q": "Do bank statements match?", "si": "බැංකු වාර්තා සැසඳේද?"}, "sectorName": "Finance & Accounting (මූල්ය සහ ගණකාධිකරණය)"}, {"id": 37, "nameEN": "Supplier Invoice Verification", "nameSI": "සැපයුම්කරුගේ ඉන්වොයිසි පරීක්ෂාව", "activities": [{"num": 1, "en": "Receive Supplier Invoice", "si": "සැපයුම්කරුගේ ඉන්වොයිසිය ලැබීම"}, {"num": 2, "en": "Fetch Original PO", "si": "මුල් ඇණවුම් පත්රය සෙවීම"}, {"num": 3, "en": "Fetch Goods Receipt", "si": "භාණ්ඩ ලැබීමේ පත්රය සෙවීම"}, {"num": 4, "en": "Perform Three-Way Match", "si": "ලියකියවිලි 3ම සැසඳීම"}, {"num": 5, "en": "Verify Tax Calculations", "si": "බදු ගණනය කිරීම් බැලීම"}, {"num": 6, "en": "Flag Price Differences", "si": "මිල වෙනස්කම් සලකුණු කිරීම"}, {"num": 7, "en": "Approve Valid Invoice", "si": "නිවැරදි ඉන්වොයිසිය අනුමත කිරීම"}, {"num": 8, "en": "Queue for Payment", "si": "ගෙවීම් පෝලිමට යැවීම"}], "decision": {"q": "Do documents match (3-way)?", "si": "ලියකියවිලි 3ම සැසඳේද?"}, "sectorName": "Finance & Accounting (මූල්ය සහ ගණකාධිකරණය)"}, {"id": 38, "nameEN": "Accounts Payable Execution", "nameSI": "ගෙවිය යුතු මුදල් ගෙවීම", "activities": [{"num": 1, "en": "Review Approved Vouchers", "si": "අනුමත වවුචර් සමාලෝචනය"}, {"num": 2, "en": "Check Available Cash", "si": "තිබෙන මුදල් ප්රමාණය බැලීම"}, {"num": 3, "en": "Select Payment Method", "si": "ගෙවන ක්රමය තේරීම"}, {"num": 4, "en": "Prepare Bank Transfer", "si": "බැංකු හුවමාරුව සකස් කිරීම"}, {"num": 5, "en": "Authorize Bank Transfer", "si": "ගෙවීම් බලය පැවරීම"}, {"num": 6, "en": "Execute Digital Transfer", "si": "මුදල් හුවමාරු කිරීම"}, {"num": 7, "en": "Send Payment Advice", "si": "ගෙවූ බව සැපයුම්කරුට කීම"}, {"num": 8, "en": "Update Ledger Account", "si": "ගිණුම් පොත් යාවත්කාලීන කිරීම"}], "decision": {"q": "Is bank transfer authorized?", "si": "බැංකු හුවමාරුව අනුමතද?"}, "sectorName": "Finance & Accounting (මූල්ය සහ ගණකාධිකරණය)"}, {"id": 39, "nameEN": "Employee Payroll Processing", "nameSI": "වැටුප් සැකසීම", "activities": [{"num": 1, "en": "Collect Attendance Data", "si": "පැමිණීමේ දත්ත එකතු කිරීම"}, {"num": 2, "en": "Calculate Overtime Hours", "si": "අතිරේක කාලය ගණනය කිරීම"}, {"num": 3, "en": "Deduct Government Taxes", "si": "බදු මුදල් අඩු කිරීම"}, {"num": 4, "en": "Compute Net Salary", "si": "ශුද්ධ වැටුප ගණනය කිරීම"}, {"num": 5, "en": "Review Payroll Summary", "si": "වැටුප් සාරාංශය සමාලෝචනය"}, {"num": 6, "en": "Approve Salary Fund", "si": "වැටුප් අරමුදල් අනුමත කිරීම"}, {"num": 7, "en": "Transfer to Bank", "si": "බැංකුවට මුදල් යැවීම"}, {"num": 8, "en": "Distribute Digital Payslips", "si": "වැටුප් පත්රිකා බෙදා හැරීම"}], "decision": {"q": "Is attendance verified?", "si": "පැමිණීමේ දත්ත තහවුරුද?"}, "sectorName": "Finance & Accounting (මූල්ය සහ ගණකාධිකරණය)"}, {"id": 40, "nameEN": "Petty Cash Management", "nameSI": "සුළු මුදල් කළමනාකරණය", "activities": [{"num": 1, "en": "Check Cash Box", "si": "මුදල් පෙට්ටිය පරීක්ෂාව"}, {"num": 2, "en": "Receive Expense Voucher", "si": "වියදම් වවුචරය ලැබීම"}, {"num": 3, "en": "Verify Attached Receipt", "si": "ඇලවූ රිසිට්පත පරීක්ෂාව"}, {"num": 4, "en": "Handout Exact Cash", "si": "මුදල් ලබාදීම"}, {"num": 5, "en": "Record Ledger Expense", "si": "වියදම සටහන් කිරීම"}, {"num": 6, "en": "Count Remaining Cash", "si": "ඉතිරි මුදල ගණන් කිරීම"}, {"num": 7, "en": "Request Replenishment Fund", "si": "මුදල් නැවත පිරවීමට ඉල්ලීම"}, {"num": 8, "en": "Balance Cash Book", "si": "පොත පියවීම"}], "decision": {"q": "Is receipt verified?", "si": "රිසිට්පත පරීක්ෂා කර තිබේද?"}, "sectorName": "Finance & Accounting (මූල්ය සහ ගණකාධිකරණය)"}, {"id": 41, "nameEN": "Monthly Financial Closing", "nameSI": "මාසික මූල්ය කටයුතු අවසන් කිරීම", "activities": [{"num": 1, "en": "Gather All Journals", "si": "සියලුම සටහන් එකතු කිරීම"}, {"num": 2, "en": "Reconcile Bank Statements", "si": "බැංකු වාර්තා සැසඳීම"}, {"num": 3, "en": "Post Depreciations Assets", "si": "දේපල ක්ෂයවීම් සටහන් කිරීම"}, {"num": 4, "en": "Calculate Monthly Profit", "si": "මාසික ලාභය සෙවීම"}, {"num": 5, "en": "Draft Balance Sheet", "si": "ශේෂ පත්රය කෙටුම්පත් කිරීම"}, {"num": 6, "en": "Review Financial Reports", "si": "මූල්ය වාර්තා සමාලෝචනය"}, {"num": 7, "en": "Lock Accounting Period", "si": "ගිණුම්කරණ කාලය වසා දැමීම"}, {"num": 8, "en": "File Tax Returns", "si": "බදු වාර්තා ගොනු කිරීම"}], "decision": {"q": "Is profit calculated?", "si": "මාසික ලාභය සෙවූවාද?"}, "sectorName": "Finance & Accounting (මූල්ය සහ ගණකාධිකරණය)"}, {"id": 42, "nameEN": "Employee Recruitment", "nameSI": "සේවකයින් බඳවා ගැනීම", "activities": [{"num": 1, "en": "Post Job Vacancy", "si": "ඇබෑර්තුව පළකිරීම"}, {"num": 2, "en": "Collect Incoming CVs", "si": "අයදුම්පත් එකතු කිරීම"}, {"num": 3, "en": "Shortlist Best Candidates", "si": "සුදුස්සන් තේරීම"}, {"num": 4, "en": "Schedule Interview Date", "si": "සම්මුඛ පරීක්ෂණ සැලසුම් කිරීම"}, {"num": 5, "en": "Conduct Job Interview", "si": "සම්මුඛ පරීක්ෂණය පැවැත්වීම"}, {"num": 6, "en": "Select Target Candidate", "si": "සුදුසුම පුද්ගලයා තේරීම"}, {"num": 7, "en": "Send Job Offer", "si": "රැකියා දීමනාව යැවීම"}, {"num": 8, "en": "Sign Employment Contract", "si": "ගිවිසුම අත්සන් කිරීම"}], "decision": {"q": "Is candidate shortlisted?", "si": "සුදුස්සන් තෝරාගෙන තිබේද?"}, "sectorName": "Human Resources & General Admin (මානව සම්පත් සහ පරිපාලන)"}, {"id": 43, "nameEN": "New Hire Onboarding", "nameSI": "නව සේවකයින් පුහුණු කිරීම", "activities": [{"num": 1, "en": "Prepare Work Desk", "si": "වැඩපොළ ලෑස්ති කිරීම"}, {"num": 2, "en": "Issue IT Laptop", "si": "ලැප්ටොප් එකක් දීම"}, {"num": 3, "en": "Create System Account", "si": "පද්ධති ගිණුම් සෑදීම"}, {"num": 4, "en": "Introduce Office Team", "si": "කණ්ඩායමට හඳුන්වා දීම"}, {"num": 5, "en": "Explain Company Policies", "si": "නීති රීති පැහැදිලි කිරීම"}, {"num": 6, "en": "Deliver Safety Training", "si": "ආරක්ෂක පුහුණුව දීම"}, {"num": 7, "en": "Assign First Project", "si": "පළමු කාර්යය පැවරීම"}, {"num": 8, "en": "Collect Feedback Survey", "si": "ප්රතිචාර ලබාගැනීම"}], "decision": {"q": "Are system logins ready?", "si": "පද්ධති ගිණුම් සක්‍රියද?"}, "sectorName": "Human Resources & General Admin (මානව සම්පත් සහ පරිපාලන)"}, {"id": 44, "nameEN": "Employee Leave Application", "nameSI": "නිවාඩු ඉල්ලුම් කිරීම", "activities": [{"num": 1, "en": "Fill Leave Form", "si": "නිවාඩු පෝරමය පිරවීම"}, {"num": 2, "en": "State Absence Reason", "si": "හේතුව සඳහන් කිරීම"}, {"num": 3, "en": "Check Leave Balance", "si": "ඉතිරි නිවාඩු බැලීම"}, {"num": 4, "en": "Submit to Supervisor", "si": "සුපරීක්ෂකට ඉදිරිපත් කිරීම"}, {"num": 5, "en": "Check Team Availability", "si": "කණ්ඩායමේ අනෙක් අය බැලීම"}, {"num": 6, "en": "Approve Leave Request", "si": "නිවාඩුව අනුමත කිරීම"}, {"num": 7, "en": "Update Attendance System", "si": "පැමිණීමේ පද්ධතිය යාවත්කාලීන කිරීම"}, {"num": 8, "en": "Notify Team Members", "si": "කණ්ඩායම දැනුවත් කිරීම"}], "decision": {"q": "Is leave balance verified?", "si": "ඉතිරි නිවාඩු ප්‍රමාණවත්ද?"}, "sectorName": "Human Resources & General Admin (මානව සම්පත් සහ පරිපාලන)"}, {"id": 45, "nameEN": "Performance Appraisal Process", "nameSI": "සේවක ඇගයීම", "activities": [{"num": 1, "en": "Set Performance Goals", "si": "ඉලක්ක සැකසීම"}, {"num": 2, "en": "Self-Evaluate Employee Form", "si": "සේවකයා තමාම ඇගයීම"}, {"num": 3, "en": "Manager Reviews Form", "si": "කළමනාකරු සමාලෝචනය"}, {"num": 4, "en": "Conduct Appraisal Meeting", "si": "ඇගයීම් රැස්වීම පැවැත්වීම"}, {"num": 5, "en": "Grade Overall Performance", "si": "කාර්යසාධන ශ්රේණිය ලබාදීම"}, {"num": 6, "en": "Discuss Training Needs", "si": "පුහුණු අවශ්යතා සාකච්ඡා කිරීම"}, {"num": 7, "en": "Agree Salary Increment", "si": "වැටුප් වර්ධක එකඟ වීම"}, {"num": 8, "en": "Update HR Record", "si": "HR වාර්තා යාවත්කාලීන කිරීම"}], "decision": {"q": "Are target goals met?", "si": "ඉලක්ක සපුරා තිබේද?"}, "sectorName": "Human Resources & General Admin (මානව සම්පත් සහ පරිපාලන)"}, {"id": 46, "nameEN": "Workplace Safety Inspection", "nameSI": "වැඩබිම් ආරක්ෂණ පරීක්ෂාව", "activities": [{"num": 1, "en": "Wear Safety Gear", "si": "ආරක්ෂිත ඇඳුම් ඇඳීම"}, {"num": 2, "en": "Inspect Fire Extinguishers", "si": "ගිනි නිවන උපකරණ පරීක්ෂාව"}, {"num": 3, "en": "Check Emergency Exits", "si": "හදිසි පිටවීම් පරීක්ෂාව"}, {"num": 4, "en": "Review Hazard Signs", "si": "අන්තරාදායක සලකුණු බැලීම"}, {"num": 5, "en": "Document Safety Violations", "si": "ආරක්ෂක වැරදි සටහන් කිරීම"}, {"num": 6, "en": "Issue Warning Notice", "si": "නිවේදනයක් නිකුත් කිරීම"}, {"num": 7, "en": "Fix Hazard Immediately", "si": "අන්තරායන් වහාම නිවැරදි කිරීම"}, {"num": 8, "en": "File Safety Report", "si": "ආරක්ෂක වාර්තාව ගොනු කිරීම"}], "decision": {"q": "Are exits cleared?", "si": "හදිසි පිටවීම් පරීක්ෂා කර තිබේද?"}, "sectorName": "Human Resources & General Admin (මානව සම්පත් සහ පරිපාලන)"}, {"id": 47, "nameEN": "Employee Resignation / Offboarding", "nameSI": "සේවක අස්වීම් කටයුතු", "activities": [{"num": 1, "en": "Receive Resignation Letter", "si": "අස්වීමේ ලිපිය ලැබීම"}, {"num": 2, "en": "Conduct Exit Interview", "si": "අවසාන සම්මුඛ පරීක්ෂණය"}, {"num": 3, "en": "Request Knowledge Transfer", "si": "වැඩ කටයුතු වෙන කෙනෙකුට කියාදීම"}, {"num": 4, "en": "Return Company Laptop", "si": "ලැප්ටොප් එක ආපසු බාරගැනීම"}, {"num": 5, "en": "Deactivate System Logins", "si": "පද්ධති ගිණුම් අත්හිටුවීම"}, {"num": 6, "en": "Calculate Final Settlement", "si": "අවසාන මුදල් ගණනය කිරීම"}, {"num": 7, "en": "Issue Clearance Certificate", "si": "නිදහස් කිරීමේ සහතිකය දීම"}, {"num": 8, "en": "Archive Employee File", "si": "ගොනුව සංරක්ෂණය කිරීම"}], "decision": {"q": "Is clearance certificate issued?", "si": "නිදහස් සහතිකය නිකුත් කර තිබේද?"}, "sectorName": "Human Resources & General Admin (මානව සම්පත් සහ පරිපාලන)"}, {"id": 48, "nameEN": "Visitor Management", "nameSI": "අමුත්තන් කළමනාකරණය", "activities": [{"num": 1, "en": "Greet Office Visitor", "si": "අමුත්තා පිළිගැනීම"}, {"num": 2, "en": "Ask Visit Reason", "si": "පැමිණි හේතුව ඇසීම"}, {"num": 3, "en": "Verify Host Availability", "si": "හමුවීමට ඇති පුද්ගලයා බැලීම"}, {"num": 4, "en": "Record Identity Details", "si": "හැඳුනුම්පත් තොරතුරු සටහන් කිරීම"}, {"num": 5, "en": "Issue Visitor Badge", "si": "අමුත්තන්ගේ කාඩ්පත දීම"}, {"num": 6, "en": "Escort Meeting Room", "si": "රැස්වීම් කාමරයට කැඳවාගෙන යාම"}, {"num": 7, "en": "Conduct Scheduled Meeting", "si": "රැස්වීම පැවැත්වීම"}, {"num": 8, "en": "Collect Badge Return", "si": "කාඩ්පත ආපසු ලබාගෙන පිටත් කිරීම"}], "decision": {"q": "Is host available?", "si": "හමුවීමට ඇති පුද්ගලයා සූදානම්ද?"}, "sectorName": "Human Resources & General Admin (මානව සම්පත් සහ පරිපාලන)"}, {"id": 49, "nameEN": "IT Access Request Generation", "nameSI": "IT පහසුකම් ඉල්ලීම", "activities": [{"num": 1, "en": "Raise Access Request", "si": "පහසුකම් ඉල්ලුම් පත්රයක් දැමීම"}, {"num": 2, "en": "Specify Required Systems", "si": "අවශ්ය පද්ධති සඳහන් කිරීම"}, {"num": 3, "en": "Justify Business Need", "si": "අවශ්යතාවය සාධාරණීකරණය කිරීම"}, {"num": 4, "en": "Route Manager Approval", "si": "කළමනාකරුගේ අනුමැතියට යැවීම"}, {"num": 5, "en": "IT Administrator Reviews", "si": "IT පරිපාලක සමාලෝචනය"}, {"num": 6, "en": "Provision Access Rights", "si": "පහසුකම් ලබාදීම"}, {"num": 7, "en": "Test Login Success", "si": "ඇතුළුවීමට හැකිදැයි පරීක්ෂා කිරීම"}, {"num": 8, "en": "Notify Requesting User", "si": "පරිශීලකයා දැනුවත් කිරීම"}], "decision": {"q": "Is manager approval routed?", "si": "කළමනාකරු අනුමත කර තිබේද?"}, "sectorName": "Human Resources & General Admin (මානව සම්පත් සහ පරිපාලන)"}, {"id": 50, "nameEN": "Office Supply Procurement", "nameSI": "කාර්යාල බඩු බාහිරාදිය මිලදී ගැනීම", "activities": [{"num": 1, "en": "Audit Supply Cabinet", "si": "බඩු අල්මාරිය පරීක්ෂාව"}, {"num": 2, "en": "List Missing Items", "si": "අඩු දේවල් ලැයිස්තුගත කිරීම"}, {"num": 3, "en": "Submit Purchase Request", "si": "මිලදී ගැනීමේ ඉල්ලීම දැමීම"}, {"num": 4, "en": "Acquire Local Quotes", "si": "මිලගණන් ලබාගැනීම"}, {"num": 5, "en": "Buy Stationeries Cash", "si": "මුදල් දී බඩු මිලදී ගැනීම"}, {"num": 6, "en": "Restock Supply Cabinet", "si": "අල්මාරිය නැවත පිරවීම"}, {"num": 7, "en": "Scan Cash Receipts", "si": "රිසිට්පත් ස්කෑන් කිරීම"}, {"num": 8, "en": "Expense Finance Logging", "si": "මූල්ය අංශයට වියදම් වාර්තා කිරීම"}], "decision": {"q": "Are supply items audited?", "si": "අල්මාරිය පරීක්ෂා කර තිබේද?"}, "sectorName": "Human Resources & General Admin (මානව සම්පත් සහ පරිපාලන)"}];
+    
+    // Group processes by sector name
+    const sectorsMap = {};
+    rawSectors.forEach(proc => {
+        if (!sectorsMap[proc.sectorName]) {
+            sectorsMap[proc.sectorName] = [];
+        }
+        sectorsMap[proc.sectorName].push(proc);
+    });
 
-            <div class="pillar-col">
-                <div class="pillar-header"><h2>01. Technology</h2></div>
-                
-                <div class="track-group lbl-head"><span class="track-label">Department Head</span>
-                    <ul class="role-ul">
-                        <li>Head of Engineering</li><li>Head of Software Development</li><li>Head of Product Management</li><li>Head of Infrastructure</li><li>Head of Cloud Services</li><li>Head of Cyber Security</li><li>Head of AI & Data Science</li><li>Head of IT Operations</li><li>Head of Enterprise Architecture</li><li>Head of Quality Engineering</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-senior"><span class="track-label">Senior Management</span>
-                    <ul class="role-ul">
-                        <li>Senior Engineering Manager</li><li>Senior Software Development Manager</li><li>Senior Data Science Manager</li><li>Senior DevOps Manager</li><li>Senior Cyber Security Manager</li><li>Senior IT Operations Manager</li><li>Senior Cloud Architect</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-middle"><span class="track-label">Middle Management</span>
-                    <ul class="role-ul">
-                        <li>Project Manager / Program Manager</li><li>Scrum Master / Agile Coach</li><li>Product Manager / Product Owner</li><li>Engineering Manager / Tech Lead</li><li>Team Lead (Dev) / QA Lead</li><li>Solutions Architect</li><li>Data Engineering Lead / DevOps Lead</li><li>Data Analytics / BI Manager</li><li>Data Scientist Manager</li><li>AI/ML Manager</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-spec"><span class="track-label">Professional / Specialist</span>
-                    <ul class="role-ul">
-                        <li>Software Engineer / Full Stack Developer</li><li>Mobile App Developer / Web Developer</li><li>UI/UX Designer / QA Engineer</li><li>Automation Engineer / DevSecOps Specialist</li><li>Site Reliability Engineer (SRE)</li><li>System Administrator / Network Engineer</li><li>Database Administrator / Cloud Engineer</li><li>Cyber Security Analyst / Penetration Tester</li><li>Data Scientist / Data Analyst / BI Analyst</li><li>Machine Learning / AI Engineer</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-junior"><span class="track-label">Entry Level / Junior</span>
-                    <ul class="role-ul">
-                        <li>Junior Developer / Junior QA Engineer</li><li>Junior System Administrator</li><li>Junior Network Engineer</li><li>IT Support Associate</li><li>Data Analyst Trainee / Junior Data Scientist</li><li>BI Trainee / Data Entry Associate</li>
-                    </ul>
-                </div>
-            </div>
+    const sectorsList = Object.keys(sectorsMap).map((name, idx) => ({
+        index: idx + 1,
+        name: name,
+        processes: sectorsMap[name]
+    }));
 
-            <div class="pillar-col">
-                <div class="pillar-header"><h2>02. Finance</h2></div>
-                
-                <div class="track-group lbl-head"><span class="track-label">Department Head</span>
-                    <ul class="role-ul">
-                        <li>Finance Director</li><li>Head of Accounting</li><li>Head of Financial Planning & Analysis</li><li>Head of Treasury</li><li>Head of Taxation</li><li>Head of Audit (Internal)</li><li>Head of Risk Management</li><li>Head of Compliance</li><li>Head of Investor Relations</li><li>Head of Procurement Finance</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-senior"><span class="track-label">Senior Management</span>
-                    <ul class="role-ul">
-                        <li>Senior Finance Manager</li><li>Senior Financial Analyst Manager</li><li>Senior Accounting Manager</li><li>Senior Risk Manager</li><li>Senior Audit Manager</li><li>Senior Tax Manager</li><li>Senior Treasury Manager</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-middle"><span class="track-label">Middle Management</span>
-                    <ul class="role-ul">
-                        <li>Finance Manager</li><li>Accounting Manager</li><li>Budget Manager</li><li>Financial Planning Manager</li><li>Cost Control Manager</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-spec"><span class="track-label">Professional / Specialist</span>
-                    <ul class="role-ul">
-                        <li>Financial Analyst / Accountant</li><li>Cost Accountant / Tax Analyst</li><li>Auditor / Credit Analyst</li><li>Treasury Analyst / Payroll Specialist</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-junior"><span class="track-label">Entry Level / Junior</span>
-                    <ul class="role-ul">
-                        <li>Junior Accountant / Accounts Assistant</li><li>Finance Trainee / Audit Trainee / Tax Trainee</li>
-                    </ul>
-                </div>
-            </div>
+    let currentSelectedSectorIndex = 1;
+    let currentViewMode = 'explore'; // 'explore' or 'full'
 
-            <div class="pillar-col">
-                <div class="pillar-header"><h2>03. Marketing & Sales</h2></div>
-                
-                <div class="track-group lbl-head"><span class="track-label">Department Head</span>
-                    <ul class="role-ul">
-                        <li>Marketing Director</li><li>Head of Brand Management</li><li>Head of Digital Marketing</li><li>Head of Market Research</li><li>Head of Communications & PR</li><li>Sales Director</li><li>Head of Key Account Management</li><li>Head of Business Development</li><li>Head of E-commerce / Online Sales</li><li>Head of Customer Experience</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-senior"><span class="track-label">Senior Management</span>
-                    <ul class="role-ul">
-                        <li>Senior Marketing Manager</li><li>Senior Brand Manager</li><li>Senior Digital Marketing Manager</li><li>Senior Sales Manager</li><li>Senior Key Account Manager</li><li>Senior Market Research Manager</li><li>Senior Customer Experience Manager</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-middle"><span class="track-label">Middle Management</span>
-                    <ul class="role-ul">
-                        <li>Sales Manager / Channel Manager</li><li>Territory Manager / Marketing Manager</li><li>Growth Manager / Content Marketing Manager</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-spec"><span class="track-label">Professional / Specialist</span>
-                    <ul class="role-ul">
-                        <li>Marketing Specialist / SEO/SEM Specialist</li><li>Social Media Specialist / Content Creator</li><li>Copywriter / Graphic Designer</li><li>Sales Executive / Business Development Executive</li><li>Customer Success Specialist</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-junior"><span class="track-label">Entry Level / Junior</span>
-                    <ul class="role-ul">
-                        <li>Marketing Associate / Sales Associate</li><li>CRM Executive / Telemarketing Executive</li>
-                    </ul>
-                </div>
-            </div>
+    // Init App
+    window.addEventListener('DOMContentLoaded', () => {
+        renderSidebar();
+        renderDiagrams();
+        
+        // Auto check preferred theme
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            setTheme('dark');
+        }
+    });
 
-            <div class="pillar-col">
-                <div class="pillar-header"><h2>04. Human Resources</h2></div>
-                
-                <div class="track-group lbl-head"><span class="track-label">Department Head</span>
-                    <ul class="role-ul">
-                        <li>HR Director</li><li>Head of Talent Acquisition</li><li>Head of Learning & Development</li><li>Head of Performance Management</li><li>Head of Compensation & Benefits</li><li>Head of Employee Relations</li><li>Head of Diversity, Equity & Inclusion</li><li>Head of HR Operations</li><li>Head of HR Analytics</li><li>Head of Organizational Development</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-senior"><span class="track-label">Senior Management</span>
-                    <ul class="role-ul">
-                        <li>Senior HR Manager</li><li>Senior Talent Acquisition Manager</li><li>Senior Learning & Development Manager</li><li>Senior HR Business Partner</li><li>Senior Compensation & Benefits Manager</li><li>Senior HR Operations Manager</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-middle"><span class="track-label">Middle Management</span>
-                    <ul class="role-ul">
-                        <li>HR Manager / Recruitment Manager</li><li>Learning & Development Manager</li><li>Employee Relations Manager</li><li>HR Systems Manager</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-spec"><span class="track-label">Professional / Specialist</span>
-                    <ul class="role-ul">
-                        <li>HR Executive / Recruiter</li><li>Training Coordinator / HRIS Specialist</li><li>Compensation Analyst / Employee Engagement Specialist</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-junior"><span class="track-label">Entry Level / Junior</span>
-                    <ul class="role-ul">
-                        <li>HR Assistant / Recruitment Assistant</li><li>L&D Coordinator / HR Intern</li>
-                    </ul>
-                </div>
-            </div>
+    function renderSidebar() {
+        const listContainer = document.getElementById('sector-nav-list');
+        listContainer.innerHTML = '';
+        
+        // Add "All Sectors" option
+        const allLi = document.createElement('li');
+        allLi.className = `sector-item ${currentSelectedSectorIndex === 0 ? 'active' : ''}`;
+        allLi.innerText = 'Show All Departments (සියලුම අංශ)';
+        allLi.onclick = () => selectSector(0);
+        listContainer.appendChild(allLi);
 
-            <div class="pillar-col">
-                <div class="pillar-header"><h2>05. Legal & Compliance</h2></div>
-                
-                <div class="track-group lbl-head"><span class="track-label">Department Head</span>
-                    <ul class="role-ul">
-                        <li>Legal Director</li><li>Head of Corporate Law</li><li>Head of Contract Management</li><li>Head of Compliance</li><li>Head of Regulatory Affairs</li><li>Head of Intellectual Property</li><li>Head of Litigation</li><li>Head of Data Privacy & Protection</li><li>Head of Ethics & Governance</li><li>Company Secretary</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-senior"><span class="track-label">Senior Management</span>
-                    <ul class="role-ul">
-                        <li>Senior Legal Manager</li><li>Senior Compliance Manager</li><li>Senior Contract Manager</li><li>Senior IP Manager</li><li>Senior Privacy Manager</li><li>Senior Risk & Governance Manager</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-middle"><span class="track-label">Middle Management</span>
-                    <ul class="role-ul">
-                        <li>Compliance Manager / Contract Manager</li><li>IP Manager / Risk & Governance Manager</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-spec"><span class="track-label">Professional / Specialist</span>
-                    <ul class="role-ul">
-                        <li>Legal Corporate Counsel / Compliance Specialist</li><li>Contract Specialist / Intellectual Property Analyst</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-junior"><span class="track-label">Entry Level / Junior</span>
-                    <ul class="role-ul">
-                        <li>Junior Legal Assistant / Compliance Coordinator</li>
-                    </ul>
-                </div>
-            </div>
+        sectorsList.forEach(sector => {
+            const li = document.createElement('li');
+            li.className = `sector-item ${currentSelectedSectorIndex === sector.index ? 'active' : ''}`;
+            // Extract English name for shorter display in sidebar
+            const engName = sector.name.split('(')[0].trim();
+            li.innerText = `${sector.index}. ${engName}`;
+            li.onclick = () => selectSector(sector.index);
+            listContainer.appendChild(li);
+        });
+    }
 
-            <div class="pillar-col">
-                <div class="pillar-header"><h2>06. Operations & Supply Chain</h2></div>
-                
-                <div class="track-group lbl-head"><span class="track-label">Department Head</span>
-                    <ul class="role-ul">
-                        <li>Operations Director</li><li>Head of Supply Chain</li><li>Head of Logistics</li><li>Head of Procurement</li><li>Head of Inventory Management</li><li>Head of Production / Manufacturing</li><li>Head of Quality Assurance</li><li>Head of Distribution</li><li>Head of Vendor Management</li><li>Head of Facility Management</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-senior"><span class="track-label">Senior Management</span>
-                    <ul class="role-ul">
-                        <li>Senior Operations Manager</li><li>Senior Supply Chain Manager</li><li>Senior Logistics Manager</li><li>Senior Procurement Manager</li><li>Senior Quality Assurance Manager</li><li>Senior Production Manager</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-middle"><span class="track-label">Middle Management</span>
-                    <ul class="role-ul">
-                        <li>Operations Manager / Logistics Manager</li><li>Procurement Manager / Warehouse Manager</li><li>Production Manager / Quality Manager</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-spec"><span class="track-label">Professional / Specialist</span>
-                    <ul class="role-ul">
-                        <li>Supply Chain Analyst / Logistics Executive</li><li>Procurement Executive / Inventory Analyst</li><li>Operations Executive / Warehouse Executive</li><li>Production Executive / Quality Inspector</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-junior"><span class="track-label">Entry Level / Junior</span>
-                    <ul class="role-ul">
-                        <li>Operations Executive / Logistics Coordinator</li><li>Procurement Assistant / Inventory Coordinator</li><li>Warehouse Assistant</li>
-                    </ul>
-                </div>
-            </div>
+    function selectSector(index) {
+        currentSelectedSectorIndex = index;
+        renderSidebar();
+        document.getElementById('search-box').value = ''; // Reset search
+        renderDiagrams();
+    }
 
-            <div class="pillar-col">
-                <div class="pillar-header"><h2>07. Corporate Services</h2></div>
-                
-                <div class="track-group lbl-head"><span class="track-label">Department Head</span>
-                    <ul class="role-ul">
-                        <li>Head of Administration</li><li>Head of Facilities</li><li>Head of Real Estate</li><li>Head of Travel & Hospitality</li><li>Head of Security Management</li><li>Head of Corporate Communications</li><li>Head of Sustainability (ESG)</li><li>Head of Events & Conferences</li><li>Head of Government Relations</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-senior"><span class="track-label">Senior Management</span>
-                    <ul class="role-ul">
-                        <li>Senior Admin Manager</li><li>Senior Facilities Manager</li><li>Senior Security Manager</li><li>Senior Communications Manager</li><li>Senior Sustainability Manager</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-middle"><span class="track-label">Middle Management</span>
-                    <ul class="role-ul">
-                        <li>Admin Manager / Facilities Manager</li><li>Security Manager / Events Lead</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-spec"><span class="track-label">Professional / Specialist</span>
-                    <ul class="role-ul">
-                        <li>Admin Executive / Executive Assistant</li><li>Office Coordinator / Facilities Executive</li><li>Travel Coordinator / Security Executive</li><li>Receptionist</li>
-                    </ul>
-                </div>
-                <div class="track-group lbl-junior"><span class="track-label">Entry Level / Junior</span>
-                    <ul class="role-ul">
-                        <li>Admin Assistant / Front Desk Executive</li><li>Office Assistant / Facilities Assistant</li><li>Security Assistant</li>
-                    </ul>
-                </div>
-            </div>
+    function setMode(mode) {
+        currentViewMode = mode;
+        document.getElementById('btn-explore').classList.toggle('active', mode === 'explore');
+        document.getElementById('btn-full').classList.toggle('active', mode === 'full');
+        
+        if (mode === 'full') {
+            document.body.classList.add('full-document-mode');
+        } else {
+            document.body.classList.remove('full-document-mode');
+        }
+        
+        renderDiagrams();
+    }
 
-        </section>
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        setTheme(newTheme);
+    }
 
-        <section class="bottom-section" style="border-color: #be123c;">
-            <h2 class="bottom-title" style="color: #be123c;">Internship, Trainee & Early Career Programs</h2>
-            <div class="flex-wrap-center">
-                <div class="program-card">Internship Programs (Department Wise)</div>
-                <div class="program-card">Graduate Trainee Programs</div>
-                <div class="program-card">Management Trainee Programs</div>
-                <div class="program-card">Apprenticeship Programs</div>
-                <div class="program-card">Industrial Training Programs</div>
-                <div class="program-card">Partnership University Programs</div>
-                <div class="program-card">Leadership Development Programs</div>
-            </div>
-        </section>
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        const icon = document.getElementById('theme-icon');
+        const text = document.getElementById('theme-text');
+        
+        if (theme === 'dark') {
+            icon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
+            text.innerText = 'Light Mode';
+        } else {
+            icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+            text.innerText = 'Dark Mode';
+        }
+    }
 
-        <section class="bottom-section" style="border-color: var(--color-support);">
-            <h2 class="bottom-title" style="color: var(--text-secondary);">Support & Essential Roles (Foundation of the Company)</h2>
-            <div class="flex-wrap-center">
-                <div class="support-card">IT Help Desk Support</div>
-                <div class="support-card">Technical Support</div>
-                <div class="support-card">Customer Support / Service Desk</div>
-                <div class="support-card">Call Center Executive</div>
-                <div class="support-card">System Maintenance</div>
-                <div class="support-card">Facilities Maintenance</div>
-                <div class="support-card">Housekeeping Services</div>
-                <div class="support-card">Driver / Transportation</div>
-                <div class="support-card">Cafeteria / Food Services</div>
-                <div class="support-card">Health & Safety Officer</div>
-                <div class="support-card">Environment Officer</div>
-            </div>
-        </section>
-    </main>
+    function handleSearch() {
+        renderDiagrams();
+    }
+
+    function renderDiagrams() {
+        const container = document.getElementById('diagrams-container');
+        container.innerHTML = '';
+        
+        const searchQuery = document.getElementById('search-box').value.toLowerCase().trim();
+        let targetProcesses = [];
+        
+        if (currentViewMode === 'full') {
+            // Full document displays everything
+            targetProcesses = rawSectors;
+        } else {
+            // Explorer mode honors sidebar filter
+            if (currentSelectedSectorIndex === 0) {
+                targetProcesses = rawSectors;
+            } else {
+                const selectedSector = sectorsList.find(s => s.index === currentSelectedSectorIndex);
+                if (selectedSector) {
+                    targetProcesses = selectedSector.processes;
+                }
+            }
+        }
+
+        // Apply Search Filter if any
+        if (searchQuery) {
+            targetProcesses = targetProcesses.filter(proc => {
+                const matchName = proc.nameEN.toLowerCase().includes(searchQuery) || proc.nameSI.toLowerCase().includes(searchQuery);
+                const matchSector = proc.sectorName.toLowerCase().includes(searchQuery);
+                const matchActivities = proc.activities.some(act => 
+                    act.en.toLowerCase().includes(searchQuery) || act.si.toLowerCase().includes(searchQuery)
+                );
+                return matchName || matchSector || matchActivities;
+            });
+        }
+
+        document.getElementById('search-stats').innerText = `Showing ${targetProcesses.length} of 50 processes`;
+
+        if (targetProcesses.length === 0) {
+            container.innerHTML = '<div style="padding: 40px; text-align: center; color: var(--text-muted); font-weight: 500;">No processes matched your search.</div>';
+            return;
+        }
+
+        targetProcesses.forEach(proc => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'diagram-wrapper';
+            wrapper.id = `proc-${proc.id}`;
+            
+            // Format ID with leading zero
+            const padId = String(proc.id).padStart(2, '0');
+            
+            // Reconstruct Activities mapped to structural flowchart elements
+            const act1 = proc.activities.find(a => a.num === 1);
+            const act2 = proc.activities.find(a => a.num === 2);
+            const act3 = proc.activities.find(a => a.num === 3);
+            const act4 = proc.activities.find(a => a.num === 4);
+            const act5 = proc.activities.find(a => a.num === 5);
+            const act6 = proc.activities.find(a => a.num === 6);
+            const act7 = proc.activities.find(a => a.num === 7);
+            const act8 = proc.activities.find(a => a.num === 8);
+
+            wrapper.innerHTML = `
+                <div class="meta-row">
+                    <div><strong>Diagram Number :</strong> ${padId}</div>
+                    <div class="utility-btns">
+                        <button class="btn-utility" onclick="copyText(${proc.id})">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            Copy List
+                        </button>
+                        <button class="btn-utility" onclick="copyHTML(${proc.id})">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                            Copy HTML
+                        </button>
+                    </div>
+                </div>
+                <div class="meta-row bg-light-gray">
+                    <strong>Business Process Name:</strong> &nbsp; ${proc.nameEN} (${proc.nameSI})
+                </div>
+                <div class="flow-container">
+                    <div class="diagram-flow">
+                        <div class="start-node" title="Process Start"></div>
+                        <div class="arrow-down"></div>
+                        
+                        <!-- Step 1 -->
+                        <div class="activity-box" title="Step 1">
+                            1. ${act1.en}<br><span style="font-size: 11px; opacity: 0.8; font-weight: 400;">${act1.si}</span>
+                        </div>
+                        <div class="arrow-down"></div>
+                        
+                        <!-- AND-Split Gateway -->
+                        <div class="fork-join-bar" title="AND-Split (Parallel Operations)"></div>
+                        
+                        <!-- Parallel Steps 2 & 3 -->
+                        <div class="parallel-split">
+                            <div class="parallel-branch">
+                                <div class="activity-box" title="Step 2">
+                                    2. ${act2.en}<br><span style="font-size: 11px; opacity: 0.8; font-weight: 400;">${act2.si}</span>
+                                </div>
+                            </div>
+                            <div class="parallel-branch">
+                                <div class="activity-box" title="Step 3">
+                                    3. ${act3.en}<br><span style="font-size: 11px; opacity: 0.8; font-weight: 400;">${act3.si}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- AND-Merge Gateway -->
+                        <div class="fork-join-bar" title="AND-Merge"></div>
+                        <div class="arrow-down"></div>
+                        
+                        <!-- Step 4 -->
+                        <div class="activity-box" title="Step 4">
+                            4. ${act4.en}<br><span style="font-size: 11px; opacity: 0.8; font-weight: 400;">${act4.si}</span>
+                        </div>
+                        <div class="arrow-down"></div>
+                        
+                        <!-- XOR-Split Gateway (Decision) -->
+                        <div class="decision-diamond" title="XOR-Gateway (Decision point)">
+                            <div class="decision-text">${proc.decision.q}<br><span style="font-size: 9px; font-weight: 400; opacity: 0.8;">${proc.decision.si}</span></div>
+                        </div>
+                        
+                        <!-- Yes/No Alternative Paths (Steps 5 & 6) -->
+                        <div class="decision-paths-container">
+                            <div class="path-line-left">
+                                <div class="path-label">Yes</div>
+                                <div class="arrow-down"></div>
+                                <div class="activity-box" title="Step 5">
+                                    5. ${act5.en}<br><span style="font-size: 11px; opacity: 0.8; font-weight: 400;">${act5.si}</span>
+                                </div>
+                            </div>
+                            <div class="path-line-right">
+                                <div class="path-label">No</div>
+                                <div class="arrow-down"></div>
+                                <div class="activity-box" title="Step 6">
+                                    6. ${act6.en}<br><span style="font-size: 11px; opacity: 0.8; font-weight: 400;">${act6.si}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="arrow-down"></div>
+                        
+                        <!-- Path Merge Connector -->
+                        <div class="fork-join-bar" title="Path Merge"></div>
+                        <div class="arrow-down"></div>
+                        
+                        <!-- Step 7 -->
+                        <div class="activity-box" title="Step 7">
+                            7. ${act7.en}<br><span style="font-size: 11px; opacity: 0.8; font-weight: 400;">${act7.si}</span>
+                        </div>
+                        <div class="arrow-down"></div>
+                        
+                        <!-- Step 8 -->
+                        <div class="activity-box" title="Step 8">
+                            8. ${act8.en}<br><span style="font-size: 11px; opacity: 0.8; font-weight: 400;">${act8.si}</span>
+                        </div>
+                        
+                        <div class="end-node" title="Process End"></div>
+                    </div>
+                </div>
+                <div class="comment-footer">
+                    <span><strong>Sector:</strong> ${proc.sectorName}</span>
+                    <span><strong>Status:</strong> Modeled successfully</span>
+                </div>
+            `;
+            container.appendChild(wrapper);
+        });
+    }
+
+    // Utility functions to copy to clipboard
+    function showToast(msg) {
+        const toast = document.getElementById('toast-notify');
+        toast.innerText = msg;
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 2500);
+    }
+
+    function copyText(id) {
+        const proc = rawSectors.find(p => p.id === id);
+        if (!proc) return;
+        
+        let text = `Process ${String(proc.id).padStart(2, '0')}: ${proc.nameEN} (${proc.nameSI})\n\n`;
+        proc.activities.forEach(act => {
+            text += `${act.num}. ${act.en} / ${act.si}\n`;
+        });
+        
+        navigator.clipboard.writeText(text).then(() => {
+            showToast('Process text copied successfully!');
+        }).catch(err => {
+            console.error('Copy failed', err);
+        });
+    }
+
+    function copyHTML(id) {
+        const element = document.getElementById(`proc-${id}`);
+        if (!element) return;
+        
+        // Clone element to sanitize buttons out
+        const clone = element.cloneNode(true);
+        const btnContainer = clone.querySelector('.utility-btns');
+        if (btnContainer) btnContainer.remove();
+        
+        navigator.clipboard.writeText(clone.outerHTML).then(() => {
+            showToast('HTML sketch code copied successfully!');
+        }).catch(err => {
+            console.error('Copy failed', err);
+        });
+    }
+</script>
 
 </body>
 </html>
